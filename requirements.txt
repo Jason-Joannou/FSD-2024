@@ -5,3 +5,4 @@ fastapi
 sqlalchemy
 sqlite
 pytest
+kaggle
