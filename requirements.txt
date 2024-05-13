@@ -4,3 +4,4 @@ plotly
 fastapi
 sqlalchemy
 sqlite
+pytest
