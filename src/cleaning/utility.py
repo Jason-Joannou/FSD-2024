@@ -2,19 +2,18 @@ import pandas as pd
 
 
 def count_nans_per_column(df: pd.DataFrame) -> pd.Series:
-    return df.isnull().sum()
+    return df.isnull().sum().to_dict()
 
 
 def count_outliers(df: pd.DataFrame) -> pd.Series:
     # Columns to check for outliers
-    # Make sure to check for ML
     columns_to_check = ["High", "Low", "Open", "Close", "Volume", "Marketcap"]
     outliers = {}
-    coin_names = set(df["Name"].to_list())
 
-    for coin_name in coin_names:
-        temp_df = df[df["Name"] == coin_name]
+    # Group DataFrame by coin name
+    grouped_df = df.groupby("Name")
 
+    for coin_name, temp_df in grouped_df:
         for col in columns_to_check:
             if col in temp_df.columns:
                 Q1 = temp_df[col].quantile(0.25)
@@ -27,7 +26,7 @@ def count_outliers(df: pd.DataFrame) -> pd.Series:
                 ).sum()
                 outliers[f"{coin_name}_{col}"] = outlier_count
 
-    return pd.Series(outliers)
+    return outliers
 
 
 if __name__ == "__main__":
