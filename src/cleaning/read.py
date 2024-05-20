@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from typing import List
 from .validation import validate_directory
-from .load import push_to_sqlite
+from .load import push_to_sqlite, write_to_csv
 
 def get_data_files(dir_path: str) -> List[str]:
 
@@ -32,6 +32,8 @@ def concatenate_csv_files(files: List[str]) -> pd.DataFrame:
         data_frames.append(df)
     
     concatenated_df = pd.concat(data_frames, ignore_index=True)
+    print(sum_lengths)
+    print(len(concatenated_df))
     return concatenated_df
 
 
@@ -39,4 +41,5 @@ def concatenate_csv_files(files: List[str]) -> pd.DataFrame:
 if __name__ == "__main__":
     file_path = get_data_files(".data")
     df = concatenate_csv_files(files=file_path)
+    # write_to_csv(df=df)
     push_to_sqlite(df=df, table_name="CoinsTable")
