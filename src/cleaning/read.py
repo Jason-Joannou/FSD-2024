@@ -33,8 +33,6 @@ def concatenate_csv_files(files: List[str]) -> pd.DataFrame:
         data_frames.append(df)
 
     concatenated_df = pd.concat(data_frames, ignore_index=True)
-    if 'Unnamed: 0' in concatenated_df.columns:
-        concatenated_df = concatenated_df.drop(labels=['Unnamed: 0'], axis=1)
     return concatenated_df
 
 
