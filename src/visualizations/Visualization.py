@@ -72,5 +72,5 @@ fig.add_trace(go.Scatter(x=data['Date'], y=[70]*len(data), mode='lines', name='H
 fig.update_xaxes(title_text="Date", row=2, col=2)
 fig.update_yaxes(title_text="RSI", row=2, col=2)
 
-fig.update_layout(title_text="Interactive Dashboard FSD Group 2 2024", showlegend=False)
+fig.update_layout(title_text="Interactive Dashboard", showlegend=False)
 fig.show()

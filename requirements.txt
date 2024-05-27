@@ -3,6 +3,5 @@ numpy
 plotly
 fastapi
 sqlalchemy
-sqlite
 pytest
 kaggle
