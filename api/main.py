@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Query
 from contextlib import asynccontextmanager
 import logging
-from src.analytics.functions import test_function
 from database.sql_connection_test import SQLiteConnection
 from database.utility import run_query
 from typing import List, Dict
