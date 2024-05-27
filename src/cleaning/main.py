@@ -1,6 +1,6 @@
 # Main cleaning file
 import pandas as pd
-from .clean import fill_na_with_median_and_mode, remove_outliers
+from .clean import fill_na_with_median_and_mode, remove_outliers, convert_datetime_column
 from .read import get_data_files, concatenate_csv_files
 from .reporting import define_report_structure, export_report
 from .utility import count_nans_per_column, count_outliers
@@ -28,6 +28,7 @@ def run_data_cleaning(directory_path: str) -> pd.DataFrame:
     # cleaning
     df = fill_na_with_median_and_mode(df=df)
     df = remove_outliers(df=df)
+    df = convert_datetime_column(df=df)
 
     # Post cleaning reporting
     outliers = count_outliers(df=df)
