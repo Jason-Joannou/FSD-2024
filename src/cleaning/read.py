@@ -37,7 +37,9 @@ def concatenate_csv_files(files: List[str]) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    file_path = get_data_files(".data")
+    file_path = get_data_files("data")
     df = concatenate_csv_files(files=file_path)
-    write_to_csv(df=df)
-    # push_to_sqlite(df=df, table_name="CoinsTable")
+    write_to_csv(df=df,file_name="data/coins.csv")
+    push_to_sqlite(df=df, table_name="CoinsTable")
+
+##uvicorn api.main:app

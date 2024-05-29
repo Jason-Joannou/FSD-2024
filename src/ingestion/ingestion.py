@@ -13,4 +13,4 @@ def load_kaggle_data(dataset_name: str, unzip: bool = True, path: str ="./.data"
 
 
 if __name__ == "__main__":
-    load_kaggle_data(dataset_name="sudalairajkumar/cryptocurrencypricehistory")
+    load_kaggle_data(dataset_name="sudalairajkumar/cryptocurrencypricehistory",path="./data")
