@@ -5,3 +5,5 @@ fastapi
 sqlalchemy
 pytest
 kaggle
+scikit-learn
+optuna

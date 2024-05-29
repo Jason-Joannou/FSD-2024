@@ -30,7 +30,6 @@ def moving_averages(df: pd.DataFrame) -> pd.DataFrame:
     df['Closing_MA_10'] = df['Close'].rolling(window=10).mean()
     df['Volume_MA_5'] = df['Volume'].rolling(window=5).mean()
     df['Volume_MA_10'] = df['Volume'].rolling(window=10).mean()
-
     return df
 
 
