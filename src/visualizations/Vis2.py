@@ -58,3 +58,14 @@ def update_figure(coin, start_date):
                           line=dict(color='aqua', dash='dash'))
 
     return [candlestick, volume, close_price, high_price, low_price, rsi, low_rsi, high_rsi]
+
+# def plot_market_cap():
+#     market_cap_data = data.groupby('Date')['Marketcap'].sum().reset_index()
+#     market_cap_trace = go.Scatter(x=market_cap_data['Date'], y=market_cap_data['Marketcap'], mode='lines',
+#                                   name='Market Cap', line=dict(color='blue'))
+#     return market_cap_trace
+#
+# def plot_market_share(date):
+#     market_share_data = data[data['Date'] == pd.to_datetime(date)].groupby('Name')['Marketcap'].sum().reset_index()
+#     market_share_trace = go.Pie(labels=market_share_data['Name'], values=market_share_data['Marketcap'], name='Market Share')
+#     return market_share_trace

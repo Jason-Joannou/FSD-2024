@@ -105,7 +105,7 @@ async def visualize():
                     yanchor='top'
                 )
             ],
-            title_text="Interactive Dashboard",
+            title_text="Interactive Crypto Dashboard",
             showlegend=False,
             autosize=True,
             height=800
