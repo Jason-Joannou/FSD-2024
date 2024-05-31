@@ -16,3 +16,4 @@ def push_to_azure(df: pd.DataFrame) -> None:
 
 def write_to_csv(df: pd.DataFrame, file_name: str = ".data/coins.csv") -> None:
     df.to_csv(file_name, index=False)
+
