@@ -20,6 +20,6 @@ def coin_summary_info(df: pd.DataFrame):
         'Marketcap': 'mean'
     })
     summary_info.columns = ['Start Date', 'End Date', 'Number of Records', 'Total Volume', 'Average Market Cap']
-    return summary_info
+    return summary_info.reset_index()
 
 
