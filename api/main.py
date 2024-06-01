@@ -4,8 +4,8 @@ import logging
 from database.sql_connection_test import SQLiteConnection
 from database.utility import run_query
 from typing import List, Dict
-from src.analytics.data_reporting import coin_proportion
-from src.visualizations.plot_reporting import plot_piechart, plot_switch
+from src.analytics.data_reporting import coin_proportion, coin_summary_info
+from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table
 import json
 
 
@@ -47,10 +47,10 @@ async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
     
 
 @app.get('/coin_reporting') # We will include pie chart with every response
-async def coin_report(coin_name: str = Query(None), graph_type: str = Query(...), x_column_name: str = Query("Close")) -> Response:
+async def coin_report(coin_name: str = Query(None), graph_type: str = Query(...)) -> Response:
     query = f"SELECT * FROM CoinsTable WHERE NAME = '{coin_name}'"
     df = run_query(query=query, connection=db_conn)
-    fig = plot_switch(graph_type=graph_type, coin_name=coin_name, df=df, x_column_name=x_column_name)
+    fig = plot_switch(graph_type=graph_type, coin_name=coin_name, df=df)
     fig.show()
     fig_json = fig.to_json()
 
@@ -64,7 +64,10 @@ async def coin_proportions() -> Response:
     query = f"SELECT * FROM CoinsTable"
     df = run_query(query=query, connection=db_conn)
     coin_proportions = coin_proportion(df=df)
+    summary_df = coin_summary_info(df=df)
+    fig_summary = plot_summary_table(summary_df=summary_df)
     fig_pie = plot_piechart(coin_counts=coin_proportions)
+    fig_summary.show()
     fig_pie.show()
     fig_pie_json = fig_pie.to_json()
     # http://127.0.0.1:8000/coin_proportion
