@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 import logging
 from database.sql_connection_test import SQLiteConnection
 from database.utility import run_query
+from src.analytics.functions import moving_averages, test_function
 from typing import List, Dict
 from src.analytics.data_reporting import coin_proportion, coin_summary_info
 from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table
@@ -37,8 +38,12 @@ async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
         query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
         df = run_query(query=query, connection=db_conn, params=params)
+        item1, item2, item3= moving_averages(df=df)
+        # visualization
+        # viz to api
         json_response = df.to_json(orient="records")
-        return {"transaction_state":200, "data":json_response}
+        return {"transaction_state":200, "data":{"item1":item1,"item2 ":item2,"item3":item3}}
+
     except Exception as e:
         main_error = "query_coin"
         sub_error = type(e).__name__  # Get the name of the error
