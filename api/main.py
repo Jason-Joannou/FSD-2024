@@ -70,7 +70,8 @@ async def coin_proportions() -> Response:
     fig_summary.show()
     fig_pie.show()
     fig_pie_json = fig_pie.to_json()
+    fig_summary_json = fig_summary.to_json()
     # http://127.0.0.1:8000/coin_proportion
-    return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_pie_json}}), media_type="application/json")
+    return Response(content=json.dumps({"transaction":200, "data":{"pie_graph": fig_pie_json, "summary_graph":fig_summary_json}}), media_type="application/json")
 
 
