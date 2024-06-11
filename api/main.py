@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Query, HTTPException, Response
+from fastapi import FastAPI, Query, HTTPException, Response, Depends
+from sqlalchemy import text
 from contextlib import asynccontextmanager
 import logging
 from database.sql_connection_test import SQLiteConnection
@@ -6,11 +7,20 @@ from database.utility import run_query
 from typing import List, Dict
 from src.analytics.data_reporting import coin_proportion, coin_summary_info
 from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table
+from .validation import UserCreate, UserLogin
+import bcrypt
 import json
 
 
 
 db_conn = SQLiteConnection(database="./test_db.db")
+
+def get_db_session():
+    db = db_conn.get_session()
+    try:
+        yield db
+    finally:
+        db.close()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -73,5 +83,51 @@ async def coin_proportions() -> Response:
     fig_summary_json = fig_summary.to_json()
     # http://127.0.0.1:8000/coin_proportion
     return Response(content=json.dumps({"transaction":200, "data":{"pie_graph": fig_pie_json, "summary_graph":fig_summary_json}}), media_type="application/json")
+
+@app.post("/register/")
+def register_user(user: UserCreate, db=Depends(get_db_session)):
+    try:
+        # Start a transaction
+        with db.begin():
+            # Check if the username already exists
+            query_username = text("SELECT id FROM users WHERE username = :username")
+            result_username = db.execute(query_username, {"username": user.username}).fetchone()
+            if result_username:
+                raise HTTPException(status_code=400, detail="Username already exists")
+            
+            # Check if the email already exists
+            query_email = text("SELECT id FROM users WHERE email = :email")
+            result_email = db.execute(query_email, {"email": user.email}).fetchone()
+            if result_email:
+                raise HTTPException(status_code=400, detail="Email already exists")
+            
+            # Hash the password
+            hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            
+            # Insert the user into the database
+            query_insert = text("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
+            db.execute(query_insert, {"username": user.username, "email": user.email, "password": hashed_password})
+            
+            db.commit()
+        
+        return {"message": "User registered successfully"}
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@app.post("/login/")
+def login_user(user: UserLogin, db=Depends(get_db_session)):
+    try:
+        query = text("SELECT * FROM users WHERE username = :username")
+        result = db.execute(query, {"username": user.username}).fetchone()
+        
+        if result and bcrypt.checkpw(user.password.encode('utf-8'), result[3].encode('utf-8')):  # Assuming password is the 4th column (index 3)
+            return {"message": "Login successful"}
+        else:
+            raise HTTPException(status_code=401, detail="Invalid username or password")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 
 
