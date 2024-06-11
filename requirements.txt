@@ -7,3 +7,4 @@ pytest
 kaggle
 scikit-learn
 optuna
+bcrypt
