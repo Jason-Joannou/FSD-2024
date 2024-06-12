@@ -1,6 +1,6 @@
 from .exceptions import InvalidDatasetName
 
-def validate_dataset_name(dataset_name: str) -> str:
+def validate_dataset_name(dataset_name: str) -> None:
     validation_array = dataset_name.split("/")
     
     # Check correct format

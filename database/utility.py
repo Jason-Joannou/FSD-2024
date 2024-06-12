@@ -3,9 +3,9 @@ from sqlalchemy import text
 from .sql_connection_test import SQLiteConnection
 from .exceptions import DataBaseQueryException
 from sqlalchemy.exc import SQLAlchemyError
-from typing import List, Tuple
+from typing import List, Dict, Optional
 
-def run_query(query: str, connection: SQLiteConnection.connect, params: Tuple[str] = None) -> pd.DataFrame:
+def run_query(query: str, connection: SQLiteConnection, params: Optional[Dict[str, str]] = None) -> pd.DataFrame:
     """
     Executes the given SQL query on the provided database connection
     and returns the result as a Pandas DataFrame.

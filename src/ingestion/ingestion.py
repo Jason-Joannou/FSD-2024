@@ -1,7 +1,7 @@
 import kaggle
 from .validation import validate_dataset_name
 
-def load_kaggle_data(dataset_name: str, unzip: bool = True, path: str ="./.data") -> str:
+def load_kaggle_data(dataset_name: str, unzip: bool = True, path: str ="./.data") -> None:
     try:
         validate_dataset_name(dataset_name=dataset_name)
         kaggle.api.dataset_download_files(dataset=dataset_name, path=path, unzip=unzip)
