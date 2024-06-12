@@ -11,7 +11,6 @@ def xy_plot(df: pd.DataFrame, x_column_name: str, y_column_name: str, graph_type
         fig = plot_line(df=df, x_column_name=x_column_name, y_column_name=y_column_name)
     else:
         pass
-    # Line plots are simple x, y plots
     # http://127.0.0.1:8000/query_coin_example?coin_names=Bitcoin&coin_names=Ethereum&coin_names=Cardano&graph_type=scatter
 
     return fig
