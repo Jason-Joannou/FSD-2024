@@ -12,6 +12,7 @@ def xy_plot(df: pd.DataFrame, x_column_name: str, y_column_name: str, graph_type
     else:
         pass
     # http://127.0.0.1:8000/query_coin_example?coin_names=Bitcoin&coin_names=Ethereum&coin_names=Cardano&graph_type=scatter
+    # Add other graphs if needed
 
     return fig
 
