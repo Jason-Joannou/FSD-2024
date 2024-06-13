@@ -6,10 +6,13 @@ from database.sql_connection_test import SQLiteConnection
 from database.utility import run_query
 from typing import List, Dict
 from src.analytics.data_reporting import coin_proportion, coin_summary_info
+from src.analytics.analytical_functions import daily_price_change, daily_price_range, moving_average, find_peaks_and_valleys, correlation_analysis
 from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table
+from src.visualizations.plot_analytics import xy_plot, plot_line  # Importing the custom plot function
 from .validation import UserCreate, UserLogin
 import bcrypt
 import json
+import plotly.express as px
 
 
 
@@ -55,6 +58,70 @@ async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
         message = str(e)
         return {"transacation_state": 500, "error_state": {"error_loc": main_error, "sub_error": sub_error, "message": message}}
     
+
+
+@app.get('/daily_price_change')
+async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Dict:
+    try:
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
+        df = daily_price_change(df)
+        fig = xy_plot(df=df, x_column_name='Date', y_column_name='DailyPriceChangeClosing', graph_type="line")
+        fig.show()
+
+        fig_json = fig.to_json()
+        return {"transaction_state": 200, "data": fig_json}
+    except Exception as e:
+        return {"transaction_state": 500, "error": str(e)}
+
+
+@app.get('/daily_price_range')
+async def get_daily_price_range(coin_names: List[str] = Query(...), graph_type: str = Query("line")) -> Dict:
+    try:
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
+        df = daily_price_range(df)
+        fig = xy_plot(df=df, x_column_name='Date', y_column_name='DailyPriceRange', graph_type="line")
+        fig.show()
+        fig_json = fig.to_json()
+        return {"transaction_state": 200, "data": fig_json}
+    except Exception as e:
+        return {"transaction_state": 500, "error": str(e)}
+    
+#Not working
+@app.get('/moving_averages')
+async def get_moving_averages(coin_names: List[str] = Query(...), window: int = Query(5), graph_type: str = Query("line")) -> Dict:
+    try:
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
+        df = moving_average(df, window= [window])
+        fig = xy_plot(df=df, x_column_name='Date', y_column_name=f'MovingAverage_{window}', graph_type="line")
+        fig_json = fig.to_json()
+        return {"transaction_state": 200, "data": fig_json}
+    except Exception as e:
+        return {"transaction_state": 500, "error": str(e)}
+
+#need visualisation tool
+@app.get('/correlation_analysis')
+async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
+    try:
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
+        correlation_matrix = correlation_analysis(df)
+        fig = px.imshow(correlation_matrix, text_auto=True, title='Correlation Analysis')
+        fig_json = fig.to_json()
+        return {"transaction_state": 200, "data": fig_json}
+    except Exception as e:
+        return {"transaction_state": 500, "error": str(e)}
+
 
 @app.get('/coin_reporting') # We will include pie chart with every response
 async def coin_report(coin_name: str = Query(None), graph_type: str = Query(...)) -> Response:
@@ -128,6 +195,3 @@ def login_user(user: UserLogin, db=Depends(get_db_session)):
             raise HTTPException(status_code=401, detail="Invalid username or password")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-
-

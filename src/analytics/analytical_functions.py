@@ -5,8 +5,7 @@ import plotly.graph_objs as go
 
 def daily_price_change(df: pd.DataFrame) -> pd.DataFrame:
     df.sort_values(["Name", "Date"], inplace=True)
-    df['DailyPriceChangeClosing'] = df.groupby("Name")['Close'].diff()
-    df['DailyPriceChangeOpening'] = df.groupby("Name")['Open'].diff()
+    df['DailyPriceChangeClosing'] = df.groupby("Name")['Close'].diff() 
     return df
 
 def daily_price_range(df: pd.DataFrame) -> pd.DataFrame:
