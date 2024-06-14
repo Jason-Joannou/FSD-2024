@@ -9,6 +9,7 @@ from .utility import (calculate_sma,
                       calculate_roc,
                       calculate_atr,
                       calculate_lag_features)
+from sklearn.impute import SimpleImputer
 
 
 def add_date_features(df: pd.DataFrame) -> pd.DataFrame:
@@ -18,7 +19,7 @@ def add_date_features(df: pd.DataFrame) -> pd.DataFrame:
     df['Year'] = df['Date'].dt.year
     df['DayOfWeek'] = df['Date'].dt.dayofweek
     df['IsWeekend'] = df['DayOfWeek'].apply(lambda x: 1 if x >= 5 else 0)
-
+    df = df.drop(columns=["Date"])
     return df
 
 def add_technical_features(df: pd.DataFrame) -> pd.DataFrame:
@@ -40,6 +41,19 @@ def add_technical_features(df: pd.DataFrame) -> pd.DataFrame:
 def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     df = add_date_features(df=df)
     df = add_technical_features(df=df)
+    df = pd.get_dummies(df, columns=['Name', 'Symbol'])
+    
+    # Check for NaNs and print column names with NaN counts
+    nan_counts = df.isnull().sum()
+    for col, nan_count in zip(df.columns, nan_counts):
+        if nan_count > 0:
+            print(f"Column '{col}' has {nan_count} NaN value(s).")
+
+    # Imputation logic as previously discussed...
+    if df.isnull().values.any():
+        print("NaNs detected in the DataFrame. Imputing...")
+        imputer = SimpleImputer(strategy='mean')
+        df = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
 
     return df
 
