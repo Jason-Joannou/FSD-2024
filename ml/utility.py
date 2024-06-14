@@ -11,7 +11,7 @@ def calculate_sma(data: pd.Series, window: int = 5) -> pd.Series:
     return data
 
 def calculate_ema(data: pd.Series, span: int = 10) -> pd.Series:
-    data = data.ewm(span=span, adjust=False)
+    data = data.ewm(span=span, adjust=False).mean()
     return data
 
 def calculate_rsi(series: pd.Series, period: int = 14) -> pd.Series:
