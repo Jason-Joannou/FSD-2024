@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from typing import Tuple
+from typing import Tuple, Dict
 
 def split_data(features, target, split=0.2):
     X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=split)
@@ -61,3 +61,12 @@ def calculate_lag_features(df: pd.DataFrame, lags: int = 1) -> pd.DataFrame:
         df[f'Lag_{lag}_Low'] = df['Low'].shift(lag)
         df[f'Lag_{lag}_Volume'] = df['Volume'].shift(lag)
     return df
+
+def get_top_n_features(model_metadata: Dict, n: int) -> None:
+    feature_importance = model_metadata['feature_importance']
+    sorted_features = sorted(feature_importance.items(), key=lambda item: item[1], reverse=True)
+    top_n_features = dict(sorted_features[:n])
+    
+    model_metadata['top_n_features'] = top_n_features
+
+    return model_metadata
