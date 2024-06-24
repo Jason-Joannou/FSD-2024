@@ -22,6 +22,18 @@ db_conn = SQLiteConnection(database="./test_db.db")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
+    """
+    Context manager for managing the lifespan of the FastAPI app.
+
+    Args:
+        app (FastAPI): The FastAPI application instance.
+
+    Yields:
+        None
+
+    Raises:
+        Exception: If the database connection status is incomplete.
+    """
     response = db_conn.test_connection()
     if response["connection_status"] == "incomplete":
         raise Exception(response["message"])
@@ -35,10 +47,29 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get('/')
 async def root():
+    """
+    Root endpoint to check the connection status.
+
+    Returns:
+        dict: A dictionary indicating a successful connection with a status code of 200.
+    """
     return {"connection_status": 200}
 
 @app.get('/query_coin')
 async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
+    
+    """
+    Query for coin data from the database.
+
+    Args:
+        coin_names (List[str]): List of coin names to query.
+
+    Returns:
+        dict: A dictionary containing the transaction state and queried data or error details.
+
+    Raises:
+        HTTPException: If an error occurs during the query.
+    """
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
@@ -56,6 +87,18 @@ async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
 
 @app.get('/daily_price_change')
 async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Dict:
+    """
+    Get daily price change for the specified coins.
+
+    Args:
+        coin_names (List[str]): List of coin names to query for daily price change.
+
+    Returns:
+        dict: A dictionary containing the transaction state and data (a JSON plot) or error details.
+
+    Raises:
+        HTTPException: If an error occurs during the query or processing.
+    """
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
@@ -63,6 +106,7 @@ async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Dict:
         df = run_query(query=query, connection=db_conn, params=params)
         df = daily_price_change(df)
         fig = xy_plot(df=df, x_column_name='Date', y_column_name='DailyPriceChangeClosing', graph_type="line")
+        fig.show()
         fig_json = fig.to_json()
         return {"transaction_state": 200, "data": fig_json}
     except Exception as e:
@@ -71,6 +115,19 @@ async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Dict:
 
 @app.get('/daily_price_range')
 async def get_daily_price_range(coin_names: List[str] = Query(...), graph_type: str = Query("line")) -> Dict:
+    """
+    Get daily price range for the specified coins.
+
+    Args:
+        coin_names (List[str]): List of coin names to query for daily price range.
+        graph_type (str): Type of graph to plot (default is "line").
+
+    Returns:
+        dict: A dictionary containing the transaction state and data (a JSON plot) or error details.
+
+    Raises:
+        HTTPException: If an error occurs during the query or processing.
+    """
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
@@ -78,6 +135,7 @@ async def get_daily_price_range(coin_names: List[str] = Query(...), graph_type: 
         df = run_query(query=query, connection=db_conn, params=params)
         df = daily_price_range(df)
         fig = xy_plot(df=df, x_column_name='Date', y_column_name='DailyPriceRange', graph_type="line")
+        fig.show()
         fig_json = fig.to_json()
         return {"transaction_state": 200, "data": fig_json}
     except Exception as e:
@@ -86,6 +144,19 @@ async def get_daily_price_range(coin_names: List[str] = Query(...), graph_type: 
 #Not working
 @app.get('/moving_averages')
 async def get_moving_averages(coin_names: List[str] = Query(...), window: int = Query(5), graph_type: str = Query("line")) -> Dict:
+    """Get moving averages for the specified coins.
+
+    Args:
+        coin_names (List[str]): List of coin names to query for moving averages.
+        window (int): Window size for the moving average (default is 5).
+        graph_type (str): Type of graph to plot (default is "line").
+
+    Returns:
+        dict: A dictionary containing the transaction state and data (a JSON plot) or error details.
+
+    Raises:
+        HTTPException: If an error occurs during the query or processing.
+    """
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
@@ -101,6 +172,18 @@ async def get_moving_averages(coin_names: List[str] = Query(...), window: int = 
 #need visualisation tool
 @app.get('/correlation_analysis')
 async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
+    """
+    Get correlation analysis for the specified coins.
+
+    Args:
+        coin_names (List[str]): List of coin names to query for correlation analysis.
+
+    Returns:
+        dict: A dictionary containing the transaction state and data (a JSON plot) or error details.
+
+    Raises:
+        HTTPException: If an error occurs during the query or processing.
+    """
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
@@ -116,6 +199,19 @@ async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
 
 @app.get('/coin_reporting') # We will include pie chart with every response
 async def coin_report(coin_name: str = Query(None), graph_type: str = Query(...)) -> Response:
+    """
+    Generate a report for the specified coin with a selected graph type.
+
+    Args:
+        coin_name (str): Name of the coin to report.
+        graph_type (str): Type of graph to generate.
+
+    Returns:
+        Response: A JSON response containing the transaction state and data (a JSON plot).
+
+    Raises:
+        HTTPException: If an error occurs during the query or processing.
+    """
     query = f"SELECT * FROM CoinsTable WHERE NAME = '{coin_name}'"
     df = run_query(query=query, connection=db_conn)
     fig = plot_switch(graph_type=graph_type, coin_name=coin_name, df=df)
@@ -129,6 +225,15 @@ async def coin_report(coin_name: str = Query(None), graph_type: str = Query(...)
 
 @app.get('/coin_proportion')
 async def coin_proportions() -> Response:
+    """
+    Get the proportion of different coins and generate summary and pie charts.
+
+    Returns:
+        Response: A JSON response containing the transaction state and data (summary and pie charts).
+
+    Raises:
+        HTTPException: If an error occurs during the query or processing.
+    """
     query = f"SELECT * FROM CoinsTable"
     df = run_query(query=query, connection=db_conn)
     coin_proportions = coin_proportion(df=df)
