@@ -7,7 +7,7 @@ from .model import RidgeRegressionModel
 def run(df: pd.DataFrame) -> None:
     df = preprocess_data(df=df)
     df_columns = df.columns
-    X = df.drop(columns=['Close'])
+    X = df.drop(columns=['Close', 'Open'])
     y = df['Close']
 
     ridge_model = RidgeRegressionModel(features=X, target=y)
