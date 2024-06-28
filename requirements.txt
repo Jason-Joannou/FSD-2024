@@ -8,3 +8,4 @@ kaggle
 scikit-learn
 optuna
 bcrypt
+statsmodels
