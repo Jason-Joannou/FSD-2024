@@ -70,3 +70,7 @@ def get_top_n_features(model_metadata: Dict, n: int) -> None:
     model_metadata['top_n_features'] = top_n_features
 
     return model_metadata
+
+def filter_by_coin(coin_name: str, df: pd.DataFrame) -> pd.DataFrame:
+    coin_df = df[df["Name"] == coin_name].copy()
+    return coin_df
