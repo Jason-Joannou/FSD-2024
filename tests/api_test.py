@@ -1,6 +1,7 @@
 import requests
 import pytest
 from unittest.mock import patch
+import pandas as pd
 
 BASE_URL = "http://127.0.0.1:8080"
 
