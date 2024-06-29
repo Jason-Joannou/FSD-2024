@@ -21,6 +21,25 @@ def existing_user_data():
         "password": "ExistingPassword"
     }
 
+def test_query_coin_endpoint():
+    response = requests.get(f"{BASE_URL}/query_coin?coin_names=Bitcoin")
+
+    assert response.status_code == 200
+    assert response.json().get("transaction_state") == 200
+
+def test_daily_price_change_endpoint():
+    response = requests.get(f"{BASE_URL}/daily_price_change?coin_names=Bitcoin&coin_names=Cardano")
+
+    assert response.status_code == 200
+    assert response.json().get("transaction_state") == 200
+
+def test_daily_price_range_endpoint():
+    response = requests.get(f"{BASE_URL}/daily_price_range?coin_names=Bitcoin&coin_names=Cardano")
+
+    assert response.status_code == 200
+    assert response.json().get("transaction_state") == 200
+
+
 @patch("requests.post")
 def test_register_user(mock_post, new_user_data):
     # Mock the response for successful registration
