@@ -29,39 +29,47 @@ def sample_data():
 
 
 def test_daily_price_change(sample_data):
-    df = daily_price_change(sample_data.copy())
+    df = daily_price_change(sample_data)
     expected_changes = [None, 5.0, 5.0, None, 5.0, 10.0]
-    assert df['DailyPriceChangeClosing'].tolist() == expected_changes
+    result_changes = df['DailyPriceChangeClosing'].tolist()
+    
+    assert len(result_changes) == len(expected_changes), f"Lengths do not match. Got {len(result_changes)} expected {len(expected_changes)}."
+    
+    for result, expected in zip(result_changes, expected_changes):
+        if np.isnan(result):
+            assert expected is None, f"Expected None but got NaN at position {result_changes.index(result)}"
+        else:
+            assert result == expected, f"Expected {expected} but got {result} at position {result_changes.index(result)}"
 
 def test_daily_price_range(sample_data):
-    df = daily_price_range(sample_data.copy())
+    df = daily_price_range(sample_data)
     expected_ranges = [20, 20, 20, 40, 35, 30]
     assert df['DailyPriceRange'].tolist() == expected_ranges
 
 def test_daily_price_range_volatility(sample_data):
-    df = daily_price_range_volatility(sample_data.copy())
+    df = daily_price_range_volatility(sample_data)
     expected_volatility = [0.2, 0.19047619047619047, 0.18181818181818182, 0.2, 0.16666666666666666, 0.13636363636363635]
     assert np.allclose(df['DailyPriceRangeVolatility'].tolist(), expected_volatility, rtol=1e-05)
 
 def test_daily_price_volatility(sample_data):
-    df = daily_price_volatility(sample_data.copy())
+    df = daily_price_volatility(sample_data)
     expected_volatility = [5, 5, 5, 10, 5, 5]
     assert df['DailyPriceVolatility'].tolist() == expected_volatility
 
 def test_moving_average(sample_data):
-    df = moving_average(sample_data.copy(), window=2)
+    df = moving_average(sample_data, window=2)
     expected_moving_averages = [105.0, 107.5, 112.5, 210.0, 212.5, 220.0]
     assert np.allclose(df['MovingAverage_2'].dropna().tolist(), expected_moving_averages, rtol=1e-05)
 
 def test_find_peaks_and_valleys(sample_data):
-    df = find_peaks_and_valleys(sample_data.copy(), window=1)
+    df = find_peaks_and_valleys(sample_data, window=1)
     expected_peaks = [105, 110, 115, 210, 215, 225]
     expected_valleys = [105, 110, 115, 210, 215, 225]
     assert df['Peak'].tolist() == expected_peaks
     assert df['Valley'].tolist() == expected_valleys
 
 def test_correlation_analysis(sample_data):
-    correlation_matrix = correlation_analysis(sample_data.copy())
+    correlation_matrix = correlation_analysis(sample_data)
     assert isinstance(correlation_matrix, pd.DataFrame)
     assert correlation_matrix.shape == (5, 5)  # Since we have 5 numeric columns
 
