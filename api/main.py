@@ -7,8 +7,8 @@ from database.utility import run_query
 from typing import List, Dict
 from src.analytics.data_reporting import coin_proportion, coin_summary_info
 from src.analytics.analytical_functions import daily_price_change, daily_price_range, moving_average, find_peaks_and_valleys, correlation_analysis
-from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table
-from src.visualizations.plot_analytics import xy_plot, plot_line  # Importing the custom plot function
+from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table, plot_boxplots
+from src.visualizations.plot_analytics import plot_line  # Importing the custom plot function
 from .validation import UserCreate, UserLogin
 import bcrypt
 import json
@@ -68,8 +68,7 @@ async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Dict:
         query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
         df = run_query(query=query, connection=db_conn, params=params)
         df = daily_price_change(df)
-        fig = xy_plot(df=df, x_column_name='Date', y_column_name='DailyPriceChangeClosing', graph_type="line")
-        fig.show()
+        fig = plot_line(df=df, x_column_name='Date', y_column_name='DailyPriceChangeClosing')
 
         fig_json = fig.to_json()
         return {"transaction_state": 200, "data": fig_json}
@@ -78,30 +77,29 @@ async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Dict:
 
 
 @app.get('/daily_price_range')
-async def get_daily_price_range(coin_names: List[str] = Query(...), graph_type: str = Query("line")) -> Dict:
+async def get_daily_price_range(coin_names: List[str] = Query(...)) -> Dict:
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
         query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
         df = run_query(query=query, connection=db_conn, params=params)
         df = daily_price_range(df)
-        fig = xy_plot(df=df, x_column_name='Date', y_column_name='DailyPriceRange', graph_type="line")
-        fig.show()
+        fig = plot_line(df=df, x_column_name='Date', y_column_name='DailyPriceRange')
+
         fig_json = fig.to_json()
         return {"transaction_state": 200, "data": fig_json}
     except Exception as e:
         return {"transaction_state": 500, "error": str(e)}
     
-#Not working
 @app.get('/moving_averages')
-async def get_moving_averages(coin_names: List[str] = Query(...), window: int = Query(5), graph_type: str = Query("line")) -> Dict:
+async def get_moving_averages(coin_names: List[str] = Query(...), window: int = Query(5)) -> Dict:
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
         query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
         df = run_query(query=query, connection=db_conn, params=params)
-        df = moving_average(df, window= [window])
-        fig = xy_plot(df=df, x_column_name='Date', y_column_name=f'MovingAverage_{window}', graph_type="line")
+        df = moving_average(df, window=window)
+        fig = plot_line(df=df, x_column_name='Date', y_column_name=f'MovingAverage_{window}')
         fig_json = fig.to_json()
         return {"transaction_state": 200, "data": fig_json}
     except Exception as e:
@@ -110,6 +108,7 @@ async def get_moving_averages(coin_names: List[str] = Query(...), window: int = 
 #need visualisation tool
 @app.get('/correlation_analysis')
 async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
+    #TODO Fix correlation anaylsis endpoint
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
@@ -117,6 +116,7 @@ async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
         df = run_query(query=query, connection=db_conn, params=params)
         correlation_matrix = correlation_analysis(df)
         fig = px.imshow(correlation_matrix, text_auto=True, title='Correlation Analysis')
+        fig.show()
         fig_json = fig.to_json()
         return {"transaction_state": 200, "data": fig_json}
     except Exception as e:
@@ -124,11 +124,10 @@ async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
 
 
 @app.get('/coin_reporting') # We will include pie chart with every response
-async def coin_report(coin_name: str = Query(None), graph_type: str = Query(...)) -> Response:
+async def coin_report(coin_name: str = Query("Bitcoin")) -> Response:
     query = f"SELECT * FROM CoinsTable WHERE NAME = '{coin_name}'"
     df = run_query(query=query, connection=db_conn)
-    fig = plot_switch(graph_type=graph_type, coin_name=coin_name, df=df)
-    fig.show()
+    fig = plot_boxplots(df=df, coin_name=coin_name)
     fig_json = fig.to_json()
 
     # Return the JSON responses
@@ -144,8 +143,6 @@ async def coin_proportions() -> Response:
     summary_df = coin_summary_info(df=df)
     fig_summary = plot_summary_table(summary_df=summary_df)
     fig_pie = plot_piechart(coin_counts=coin_proportions)
-    fig_summary.show()
-    fig_pie.show()
     fig_pie_json = fig_pie.to_json()
     fig_summary_json = fig_summary.to_json()
     # http://127.0.0.1:8000/coin_proportion
