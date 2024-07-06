@@ -45,27 +45,30 @@ def test_moving_average_endpoint():
     assert response.status_code == 200
     assert response.json().get("transaction_state") == 200
 
-    response = requests.get(f"{BASE_URL}/moving_averages?coin_names=Bitcoin&coin_names=Cardano&window=10")
+    response = requests.get(f"{BASE_URL}/moving_averages?coin_names=Bitcoin&coin_names=Cardano")
 
     assert response.status_code == 200
     assert response.json().get("transaction_state") == 200
 
 def test_correlation_matrix_endpoint():
-    pass
+    response = requests.get(f"{BASE_URL}/correlation_analysis?coin_names=Bitcoin&coin_names=Cardano")
+
+    assert response.status_code == 200
+    assert response.json().get("transaction_state") == 200
 
 def test_coin_reporting_endpoint():
-    # response = requests.get(f"{BASE_URL}/coin_reporting?coin_name=Aave&graph_type=boxplot")
-    pass
+    response = requests.get(f"{BASE_URL}/coin_reporting?coin_name=Aave")
+    
+    assert response.status_code == 200
+    assert response.json().get("transaction") == 200
      
 
 def test_coin_proportion_endpoint():
     response = requests.get(f"{BASE_URL}/coin_proportion")
 
     assert response.status_code == 200
-    assert response.json().get("transaction_state") == 200
+    assert response.json().get("transaction") == 200
     
-
-
 
 @patch("requests.post")
 def test_register_user(mock_post, new_user_data):
