@@ -33,6 +33,9 @@ def find_peaks_and_valleys(df: pd.DataFrame, window: int = 3) -> pd.DataFrame:
     return df
 
 def correlation_analysis(df: pd.DataFrame) -> pd.DataFrame:
+    #TODO Fix the correlation function
+    # This function does a correlation analysis between all the columns in the data and not within any specific coin
+    # The correlation analysis should be between a selected coin and other coins
     numeric_cols = df.select_dtypes(include=[np.number]).columns
     correlation_matrix = df[numeric_cols].corr()
     return correlation_matrix
