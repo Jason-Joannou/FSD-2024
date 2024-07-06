@@ -171,6 +171,7 @@ def plot_rsi(df: pd.DataFrame, x_column_name: str, y_column_name: str):
     return fig
 
 def compute_and_plot_correlation_matrix(df: pd.DataFrame, price_column='Close'):
+    #TODO Fix correlation function
     """
     Computes the percentage change in price for each coin in the DataFrame
     and plots a correlation matrix of these changes using Plotly.
