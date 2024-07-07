@@ -9,3 +9,4 @@ scikit-learn
 optuna
 bcrypt
 statsmodels
+xgboost

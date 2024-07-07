@@ -6,6 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from .utility import split_data
 from sklearn.preprocessing import StandardScaler
+from xgboost import XGBRegressor
 
 class RidgeRegressionModel():
     def __init__(self, features: pd.DataFrame, target: pd.Series, alpha=0.1) -> None:
@@ -91,3 +92,58 @@ class RandomForestModel():
         mse = mean_squared_error(y_test, y_pred)
         self.metadata['mse'] = mse
         return mse
+    
+class XGBoostModel():
+    def __init__(self, features: pd.DataFrame, target: pd.Series, n_estimators=100, max_depth=5, learning_rate=0.1) -> None:
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.learning_rate = learning_rate
+        self.model = XGBRegressor(n_estimators=self.n_estimators, max_depth=self.max_depth, learning_rate=self.learning_rate)
+        self.feature_columns = features.columns
+        self.scaler = StandardScaler()
+        self.X_train, self.X_test, self.y_train, self.y_test = self.scale_variables(features=features, target=target)
+        self.metadata = {}
+
+    def scale_variables(self, features: pd.DataFrame, target: pd.Series) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        X_scaled = self.scaler.fit_transform(features)
+        y = target.values  # Convert target Series to numpy array
+        
+        X_train, X_test, y_train, y_test = split_data(features=X_scaled, target=y)
+
+        return X_train, X_test, y_train, y_test
+
+    def fit_model(self):
+        self.model.fit(self.X_train, self.y_train)
+        self.metadata['num_features'] = self.X_train.shape[1]
+        self.metadata['feature_importance'] = self.model.feature_importances_
+
+    def predict(self):
+        return self.model.predict(self.X_test)
+    
+    def predict_specific_coin(self, df: pd.DataFrame, coin_names: List[str]) -> pd.DataFrame:
+        predictions_list = []
+        df['Date'] = pd.to_datetime(df[['Day', 'Month', 'Year']])
+        for coin in coin_names:
+            coin_column = f'Name_{coin}'  # Construct the column name
+            if coin_column in df.columns:
+                print(coin_column)
+                df_filtered = df[df[coin_column] == 1]
+                print(df_filtered.head())
+                X_filtered = df_filtered[self.feature_columns]
+                X_scaled = self.scaler.transform(X_filtered)
+                predictions = self.model.predict(X_scaled)
+                predictions_df = pd.DataFrame({
+                    'Date': df_filtered['Date'],
+                    'Name': coin,
+                    'Predicted_Close': predictions
+                })
+                predictions_list.append(predictions_df)
+
+        predictions_df = pd.concat(predictions_list, ignore_index=True)
+        return predictions_df
+
+    def evaluate(self):
+        y_pred = self.predict()
+        mse = mean_squared_error(self.y_test, y_pred)
+        self.metadata['mse'] = mse
+        return mse 
