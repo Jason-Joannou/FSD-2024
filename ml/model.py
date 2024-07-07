@@ -35,6 +35,29 @@ class RidgeRegressionModel():
     def predict(self):
         prediction = self.model.predict(self.X_test)
         return prediction
+    
+    def predict_specific_coin(self, df: pd.DataFrame, coin_names: List[str]) -> pd.DataFrame:
+        predictions_list = []
+        scaler = StandardScaler()
+        for coin in coin_names:
+            coin_column = f'Name_{coin}'  # Construct the column name
+            if coin_column in df.columns:
+                print(coin_column)
+                df_filtered = df[df[coin_column] == 1]
+                print(df_filtered.head())
+                X_filtered = df_filtered[self.feature_columns]
+                X_scaled = scaler.fit_transform(X_filtered)
+                predictions = self.model.predict(X_scaled)
+                df_filtered['Date'] = pd.to_datetime(df_filtered[['Day', 'Month', 'Year']])
+                predictions_df = pd.DataFrame({
+                    'Date': df_filtered['Date'],
+                    'Name': coin,
+                    'Predicted_Close': predictions
+                })
+                predictions_list.append(predictions_df)
+
+        predictions_df = pd.concat(predictions_list, ignore_index=True)
+        return predictions_df
 
     def evaluate(self):
         y_pred = self.predict()
