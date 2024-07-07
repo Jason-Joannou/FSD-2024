@@ -13,12 +13,12 @@ class RidgeRegressionModel():
         self.alpha = alpha
         self.model = Ridge(alpha=self.alpha)
         self.feature_columns = features.columns
+        self.scaler = StandardScaler()
         self.X_train, self.X_test, self.y_train, self.y_test = self.scale_variables(features=features, target=target)
         self.metadata = {}
 
     def scale_variables(self, features: pd.DataFrame, target: pd.Series) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-        scaler = StandardScaler()
-        X_scaled = scaler.fit_transform(features)
+        X_scaled = self.scaler.fit_transform(features)
         y = target.values  # Convert target Series to numpy array
         
         X_train, X_test, y_train, y_test = split_data(features=X_scaled, target=y)
@@ -39,15 +39,12 @@ class RidgeRegressionModel():
     
     def predict_specific_coin(self, df: pd.DataFrame, coin_names: List[str]) -> pd.DataFrame:
         predictions_list = []
-        scaler = StandardScaler()
         for coin in coin_names:
             coin_column = f'Name_{coin}'  # Construct the column name
             if coin_column in df.columns:
-                print(coin_column)
                 df_filtered = df[df[coin_column] == 1]
-                print(df_filtered.head())
                 X_filtered = df_filtered[self.feature_columns]
-                X_scaled = scaler.fit_transform(X_filtered)
+                X_scaled = self.scaler.transform(X_filtered)
                 predictions = self.model.predict(X_scaled)
                 df_filtered['Date'] = pd.to_datetime(df_filtered[['Day', 'Month', 'Year']])
                 predictions_df = pd.DataFrame({
@@ -126,9 +123,7 @@ class XGBoostModel():
         for coin in coin_names:
             coin_column = f'Name_{coin}'  # Construct the column name
             if coin_column in df.columns:
-                print(coin_column)
                 df_filtered = df[df[coin_column] == 1]
-                print(df_filtered.head())
                 X_filtered = df_filtered[self.feature_columns]
                 X_scaled = self.scaler.transform(X_filtered)
                 predictions = self.model.predict(X_scaled)
