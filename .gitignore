@@ -164,6 +164,9 @@ cython_debug/
 # data
 .data/
 
+# Models
+.models/
+
 # Database
 
 *.db
