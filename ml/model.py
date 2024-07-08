@@ -5,11 +5,60 @@ from sklearn.linear_model import Ridge
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from .utility import split_data
+from .feature_engineering import preprocess_data
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBRegressor
+import pickle
+
+class LoadRidgeRegressionModel():
+    def __init__(self, file_path: str) -> None:
+        try:
+            with open(file_path, 'rb') as f:
+                self.loaded_model = pickle.load(f)
+                self.scaler = StandardScaler()
+            print(f"Model loaded successfully from {file_path}.")
+            print(f"Loaded model type: {type(self.loaded_model)}")
+        except FileNotFoundError:
+            print(f"Error: The file {file_path} does not exist.")
+            self.loaded_model = None
+            self.scaler = StandardScaler()
+        except pickle.UnpicklingError:
+            print(f"Error: The file {file_path} is not a valid pickle file or is corrupted.")
+            self.loaded_model = None
+            self.scaler = StandardScaler()
+        except Exception as e:
+            print(f"An unexpected error occurred while loading the model: {e}")
+            self.loaded_model = None
+            self.scaler = StandardScaler()
+
+    def predict_specific_coin(self, df: pd.DataFrame, coin_names: List[str]) -> pd.DataFrame:
+        predictions_list = []
+        feature_columns = df.drop(columns=['Close', 'Open']).columns
+
+        if not self.loaded_model:
+            raise ValueError("Model is not loaded. Cannot make predictions.")
+        
+        for coin in coin_names:
+            coin_column = f'Name_{coin}'  # Construct the column name
+            if coin_column in df.columns:
+                df_filtered = df[df[coin_column] == 1]
+                X_filtered = df_filtered[feature_columns]
+                X_scaled = self.loaded_model.scaler.transform(X_filtered)
+                predictions = self.loaded_model.predicted_loaded(X_scaled)
+                df_filtered['Date'] = pd.to_datetime(df_filtered[['Day', 'Month', 'Year']])
+                predictions_df = pd.DataFrame({
+                    'Date': df_filtered['Date'],
+                    'Name': coin,
+                    'Predicted_Close': predictions
+                })
+                predictions_list.append(predictions_df)
+
+        predictions_df = pd.concat(predictions_list, ignore_index=True)
+        return predictions_df
+        
 
 class RidgeRegressionModel():
-    def __init__(self, features: pd.DataFrame, target: pd.Series, alpha=0.1) -> None:
+    def __init__(self, features: pd.DataFrame, target: pd.Series, alpha: float) -> None:
         self.alpha = alpha
         self.model = Ridge(alpha=self.alpha)
         self.feature_columns = features.columns
@@ -35,6 +84,10 @@ class RidgeRegressionModel():
     
     def predict(self):
         prediction = self.model.predict(self.X_test)
+        return prediction
+    
+    def predicted_loaded(self, data):
+        prediction = self.model.predict(data)
         return prediction
     
     def predict_specific_coin(self, df: pd.DataFrame, coin_names: List[str]) -> pd.DataFrame:
