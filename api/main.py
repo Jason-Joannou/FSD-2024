@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Query, HTTPException, Response, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from contextlib import asynccontextmanager
 import logging
@@ -38,6 +39,17 @@ async def lifespan(app: FastAPI):
         logging.info("Database connection closed.")
 
 app = FastAPI(lifespan=lifespan)
+
+# Add CORS middleware
+origins = ["http://localhost:3000"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # All origins allowed for dev purposes
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/')
 async def root(): # Need to establish connection to database on connection to site
