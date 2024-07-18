@@ -10,7 +10,7 @@ from src.analytics.data_reporting import coin_proportion, coin_summary_info
 from src.analytics.analytical_functions import daily_price_change, daily_price_range, moving_average, find_peaks_and_valleys, correlation_analysis
 from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table, plot_boxplots
 from src.visualizations.plot_analytics import plot_line  # Importing the custom plot function
-from .validation import UserCreate, UserLogin
+from .validation import UserCreate, UserLogin, UsernameUpdate, EmailUpdate, PasswordUpdate
 import bcrypt
 import json
 import plotly.express as px
@@ -202,5 +202,63 @@ def login_user(user: UserLogin, db=Depends(get_db_session)):
             return {"message": "Login successful"}
         else:
             raise HTTPException(status_code=401, detail="Invalid username or password")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@app.post("/update_username/")
+def update_username(user_info: UsernameUpdate, db=Depends(get_db_session)):
+    try:
+        update_query = text("""
+            UPDATE users
+            SET username = :new_username
+            WHERE username = :old_username
+        """)
+        db.execute(update_query, {"new_username": user_info.new_username, "old_username": user_info.old_username})
+        db.commit()
+        
+        return {"message": "User information updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@app.post("/update_useremail/")
+def update_useremail(user_info: EmailUpdate, db=Depends(get_db_session)):
+    try:
+        update_query = text("""
+            UPDATE users
+            SET email = :new_email
+            WHERE username = :username
+        """)
+        db.execute(update_query, {"new_email": user_info.new_email, "username": user_info.username})
+        db.commit()
+        
+        return {"message": "User information updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@app.post("/update_password/")
+def update_password(user_info: PasswordUpdate, db=Depends(get_db_session)):
+    try:
+        # Authenticate user with the current password
+        query = text("SELECT password FROM users WHERE username = :username")
+        result = db.execute(query, {"username": user_info.username}).fetchone()
+        if not result or not bcrypt.checkpw(user_info.current_password.encode('utf-8'), result[0].encode('utf-8')):
+            raise HTTPException(status_code=401, detail="Invalid current password")
+        
+        if user_info.new_password != user_info.confirm_password:
+            raise HTTPException(status_code=400, detail="New passwords do not match")
+        
+        # Hash the new password
+        new_hashed_password = bcrypt.hashpw(user_info.new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        
+        # Update the user's password in the database
+        update_query = text("""
+            UPDATE users
+            SET password = :new_password
+            WHERE username = :username
+        """)
+        db.execute(update_query, {"new_password": new_hashed_password, "username": user_info.username})
+        db.commit()
+        
+        return {"message": "Password updated successfully"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
