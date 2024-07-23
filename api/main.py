@@ -55,6 +55,17 @@ app.add_middleware(
 async def root(): # Need to establish connection to database on connection to site
     return {"connection_status": 200}
 
+@app.get('/get_coin_names')
+async def get_coin_names():
+    try:
+        query = "SELECT DISTINCT Name FROM CoinsTable"
+        df = run_query(query=query, connection=db_conn)
+        json_response = df.to_json(orient="records")
+        return {"transaction_state":200, "data":json_response}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 @app.get('/query_coin')
 async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
     try:
