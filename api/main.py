@@ -11,6 +11,8 @@ from src.analytics.analytical_functions import daily_price_change, daily_price_r
 from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table, plot_boxplots
 from src.visualizations.plot_analytics import plot_line  # Importing the custom plot function
 from .validation import UserCreate, UserLogin, UsernameUpdate, EmailUpdate, PasswordUpdate
+import requests
+from bs4 import BeautifulSoup
 import bcrypt
 import json
 import plotly.express as px
@@ -287,3 +289,41 @@ async def get_available_analyses() -> Dict:
     except Exception as e:
         return {"transaction_state": 500, "error": str(e)}
 
+@app.get("/get_crypto_news")
+def get_crypto_news():
+    url = "https://crypto.news/"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    news_articles = []
+
+    # Scraping the featured stories
+    featured_stories = soup.find("div", class_="home-top-stories__featured")
+    if featured_stories:
+        articles = featured_stories.find_all("article", class_="post-top-story")
+        for article in articles:
+            title_tag = article.find("p", class_="post-top-story__title")
+            title = title_tag.get_text(strip=True) if title_tag else "No Title"
+            link_tag = title_tag.find("a") if title_tag else None
+            link = link_tag["href"] if link_tag else "No Link"
+            
+            news_articles.append({
+                "title": title,
+                "link": link
+            })
+
+    # Scraping the list of additional top stories
+    list_stories = soup.find("div", class_="home-top-stories__list")
+    if list_stories:
+        items = list_stories.find_all("div", class_="home-top-stories__item")
+        for item in items:
+            link_tag = item.find("a")
+            title = link_tag.get_text(strip=True) if link_tag else "No Title"
+            link = link_tag["href"] if link_tag else "No Link"
+            news_articles.append({
+                "title": title,
+                "description": "No Description",
+                "link": link
+            })
+
+    return news_articles
