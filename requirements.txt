@@ -10,3 +10,5 @@ optuna
 bcrypt
 statsmodels
 xgboost
+requests 
+beautifulsoup4
