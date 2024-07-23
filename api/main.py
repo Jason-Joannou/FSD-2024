@@ -84,7 +84,7 @@ async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
 
 
 @app.get('/daily_price_change')
-async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Dict:
+async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Response:
     try:
         params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
@@ -94,9 +94,9 @@ async def get_daily_price_change(coin_names: List[str] = Query(...)) -> Dict:
         fig = plot_line(df=df, x_column_name='Date', y_column_name='DailyPriceChangeClosing')
 
         fig_json = fig.to_json()
-        return {"transaction_state": 200, "data": fig_json}
+        return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_json}}), media_type="application/json")
     except Exception as e:
-        return {"transaction_state": 500, "error": str(e)}
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get('/daily_price_range')
@@ -110,9 +110,9 @@ async def get_daily_price_range(coin_names: List[str] = Query(...)) -> Dict:
         fig = plot_line(df=df, x_column_name='Date', y_column_name='DailyPriceRange')
 
         fig_json = fig.to_json()
-        return {"transaction_state": 200, "data": fig_json}
+        return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_json}}), media_type="application/json")
     except Exception as e:
-        return {"transaction_state": 500, "error": str(e)}
+        raise HTTPException(status_code=400, detail=str(e))
     
 @app.get('/moving_averages')
 async def get_moving_averages(coin_names: List[str] = Query(...), window: int = Query(5)) -> Dict:
@@ -124,10 +124,10 @@ async def get_moving_averages(coin_names: List[str] = Query(...), window: int = 
         df = moving_average(df, window=window)
         fig = plot_line(df=df, x_column_name='Date', y_column_name=f'MovingAverage_{window}')
         fig_json = fig.to_json()
-        return {"transaction_state": 200, "data": fig_json}
+        return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_json}}), media_type="application/json")
     except Exception as e:
-        return {"transaction_state": 500, "error": str(e)}
-
+        raise HTTPException(status_code=400, detail=str(e))
+    
 #need visualisation tool
 @app.get('/correlation_analysis')
 async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
@@ -141,9 +141,9 @@ async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
         fig = px.imshow(correlation_matrix, text_auto=True, title='Correlation Analysis')
         fig.show()
         fig_json = fig.to_json()
-        return {"transaction_state": 200, "data": fig_json}
+        return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_json}}), media_type="application/json")
     except Exception as e:
-        return {"transaction_state": 500, "error": str(e)}
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get('/coin_reporting') # We will include pie chart with every response
@@ -172,7 +172,7 @@ async def coin_proportions() -> Response:
     return Response(content=json.dumps({"transaction":200, "data":{"pie_graph": fig_pie_json, "summary_graph":fig_summary_json}}), media_type="application/json")
 
 @app.post("/register/")
-def register_user(user: UserCreate, db=Depends(get_db_session)):
+async def register_user(user: UserCreate, db=Depends(get_db_session)):
     try:
         # Start a transaction
         with db.begin():
@@ -204,7 +204,7 @@ def register_user(user: UserCreate, db=Depends(get_db_session)):
         raise HTTPException(status_code=400, detail=str(e))
     
 @app.post("/login/")
-def login_user(user: UserLogin, db=Depends(get_db_session)):
+async def login_user(user: UserLogin, db=Depends(get_db_session)):
     try:
         query = text("SELECT * FROM users WHERE username = :username")
         result = db.execute(query, {"username": user.username}).fetchone()
@@ -217,7 +217,7 @@ def login_user(user: UserLogin, db=Depends(get_db_session)):
         raise HTTPException(status_code=400, detail=str(e))
     
 @app.post("/update_username/")
-def update_username(user_info: UsernameUpdate, db=Depends(get_db_session)):
+async def update_username(user_info: UsernameUpdate, db=Depends(get_db_session)):
     try:
         update_query = text("""
             UPDATE users
@@ -232,7 +232,7 @@ def update_username(user_info: UsernameUpdate, db=Depends(get_db_session)):
         raise HTTPException(status_code=400, detail=str(e))
     
 @app.post("/update_useremail/")
-def update_useremail(user_info: EmailUpdate, db=Depends(get_db_session)):
+async def update_useremail(user_info: EmailUpdate, db=Depends(get_db_session)):
     try:
         update_query = text("""
             UPDATE users
@@ -247,7 +247,7 @@ def update_useremail(user_info: EmailUpdate, db=Depends(get_db_session)):
         raise HTTPException(status_code=400, detail=str(e))
     
 @app.post("/update_password/")
-def update_password(user_info: PasswordUpdate, db=Depends(get_db_session)):
+async def update_password(user_info: PasswordUpdate, db=Depends(get_db_session)):
     try:
         # Authenticate user with the current password
         query = text("SELECT password FROM users WHERE username = :username")
@@ -273,3 +273,17 @@ def update_password(user_info: PasswordUpdate, db=Depends(get_db_session)):
         return {"message": "Password updated successfully"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+@app.get('/available_analyses')
+async def get_available_analyses() -> Dict:
+    try:
+        analyses = [
+            {"name": "Daily Price Change", "endpoint": "/daily_price_change"},
+            {"name": "Daily Price Range", "endpoint": "/daily_price_range"},
+            {"name": "Moving Averages", "endpoint": "/moving_averages"},
+            {"name": "Correlation Analysis", "endpoint": "/correlation_analysis"}
+        ]
+        return {"transaction_state": 200, "data": analyses}
+    except Exception as e:
+        return {"transaction_state": 500, "error": str(e)}
+
