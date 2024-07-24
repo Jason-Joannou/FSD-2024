@@ -327,3 +327,6 @@ def get_crypto_news():
             })
 
     return news_articles
+
+
+# Adjust api calls for dates 
