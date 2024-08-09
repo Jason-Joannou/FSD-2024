@@ -7,7 +7,7 @@ Returns a welcome message for the FSD public API.
 **Returns:**
 - JSON response with a welcome message.
 
-### Example Response
+**Example Response**
 ```json
 {
     "message": "Welcome to the FSD public API"
@@ -276,9 +276,7 @@ Generates a bubble chart based on the provided data.
 
 ## POST /candlestick_chart
 
-Gener
-
-ates a candlestick chart based on the provided data.
+Generates a candlestick chart based on the provided data.
 
 **Arguments:**
 
@@ -307,5 +305,183 @@ ates a candlestick chart based on the provided data.
     "y_axis_title": "Price",
     "plot_title": "Sample Candlestick Chart",
     "html_embedding": false
+}
+```
+
+## POST /calculate_compound_interest
+
+Calculates the compound interest based on the provided parameters.
+
+**Arguments:**
+
+- `principal` (float): The initial amount of money.
+- `rate` (float): The annual interest rate (decimal).
+- `time` (int): The number of years the money is invested.
+- `n` (int): The number of times that interest is compounded per year.
+
+**Returns:**
+- JSON response with the amount of money accumulated after the specified time.
+
+**Example Request:**
+```json
+{
+    "principal": 1000,
+    "rate": 0.05,
+    "time": 10,
+    "n": 4
+}
+```
+
+**Example Response:**
+```json
+{
+    "amount": 1647.009
+}
+```
+
+## POST /calculate_loan_payments
+
+Calculates the monthly payment for a loan based on the provided parameters.
+
+**Arguments:**
+
+- `principal` (float): The loan amount.
+- `annual_rate` (float): The annual interest rate (percentage).
+- `num_payments` (int): The total number of payments.
+
+**Returns:**
+- JSON response with the monthly payment amount.
+
+**Example Request:**
+```json
+{
+    "principal": 50000,
+    "annual_rate": 5.0,
+    "num_payments": 120
+}
+```
+
+**Example Response:**
+```json
+{
+    "monthly_payment": 530.44
+}
+```
+
+## POST /calculate_savings_growth
+
+Calculates the future value of savings based on the provided parameters.
+
+**Arguments:**
+
+- `deposit` (float): The amount of each deposit.
+- `rate` (float): The annual interest rate (decimal).
+- `periods` (int): The number of periods (e.g., months).
+
+**Returns:**
+- JSON response with the future value of the savings.
+
+**Example Request:**
+```json
+{
+    "deposit": 200,
+    "rate": 0.04,
+    "periods": 12
+}
+```
+
+**Example Response:**
+```json
+{
+    "future_value": 2492.48
+}
+```
+
+## POST /calculate_retirement_savings
+
+Calculates the total retirement savings based on current savings, annual contributions, interest rate, and years.
+
+**Arguments:**
+
+- `current_savings` (float): The current amount of savings.
+- `annual_contribution` (float): The amount contributed annually.
+- `rate` (float): The annual interest rate (decimal).
+- `years` (int): The number of years of saving.
+
+**Returns:**
+- JSON response with the total savings at retirement.
+
+**Example Request:**
+```json
+{
+    "current_savings": 50000,
+    "annual_contribution": 5000,
+    "rate": 0.05,
+    "years": 20
+}
+```
+
+**Example Response:**
+```json
+{
+    "total_savings": 212347.68
+}
+```
+
+## POST /calculate_savings_rate
+
+Calculates the savings rate needed to reach a financial goal based on income, goal amount, and time frame.
+
+**Arguments:**
+
+- `income` (float): Monthly income.
+- `goal_amount` (float): Financial goal amount.
+- `months` (int): Number of months to save.
+- `rate` (float): Interest rate (decimal).
+
+**Returns:**
+- JSON response with the required savings rate.
+
+**Example Request:**
+```json
+{
+    "income": 5000,
+    "goal_amount": 60000,
+    "months": 12,
+    "rate": 0.03
+}
+```
+
+**Example Response:**
+```json
+{
+    "savings_rate": 10.00
+}
+```
+
+## POST /estimate_emergency_fund
+
+Estimates the emergency fund required based on monthly expenses and the number of months to cover.
+
+**Arguments:**
+
+- `monthly_expenses` (float): Monthly expenses.
+- `months` (int): Number of months to cover.
+
+**Returns:**
+- JSON response with the estimated emergency fund amount.
+
+**Example Request:**
+```json
+{
+    "monthly_expenses": 1500,
+    "months": 6
+}
+```
+
+**Example Response:**
+```json
+{
+    "emergency_fund": 9000
 }
 ```
