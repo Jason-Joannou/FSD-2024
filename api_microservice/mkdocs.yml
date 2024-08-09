@@ -1,4 +1,4 @@
-site_name: My API Documentation
+site_name: FSD Public API Documentation
 
 theme:
   name: material
