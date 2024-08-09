@@ -1,4 +1,4 @@
-# Welcome to the Public API Documentation
+# Welcome to the FSD Public API Documentation
 
 ## Project Overview
 
@@ -32,12 +32,8 @@ While our primary project focuses on delivering a robust analytical engine and a
 
 ## Getting Started
 
-To get started with the Public API, explore the available endpoints and learn how to interact with them to integrate our analysis tools into your applications.
+To get started with the Public API, explore the available endpoints and learn how to interact with them to integrate our analysis and visualization tools into your applications.
 
-## API Endpoints
 
-- **Endpoint 1**: Description of the first endpoint.
-- **Endpoint 2**: Description of the second endpoint.
-- **Endpoint 3**: Description of the third endpoint.
 
-For detailed usage instructions and examples, refer to the [API Documentation](link-to-detailed-api-docs).
+For detailed usage instructions and examples, refer to the [API Documentation](./api/endpoints.md).
