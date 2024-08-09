@@ -1,6 +1,8 @@
 # API Endpoints
 
-## GET /
+## API Root
+
+### GET /
 
 Returns a welcome message for the FSD public API.
 
@@ -13,8 +15,9 @@ Returns a welcome message for the FSD public API.
     "message": "Welcome to the FSD public API"
 }
 ```
+## Plotting Endpoints
 
-## POST /line_graph
+### POST /line_graph
 
 Generates a line graph based on the provided data.
 
@@ -46,7 +49,7 @@ Generates a line graph based on the provided data.
 }
 ```
 
-## POST /bar_graph
+### POST /bar_graph
 
 Generates a bar graph based on the provided data.
 
@@ -76,7 +79,7 @@ Generates a bar graph based on the provided data.
 }
 ```
 
-## POST /scatter_plot
+### POST /scatter_plot
 
 Generates a scatter plot based on the provided data.
 
@@ -108,7 +111,7 @@ Generates a scatter plot based on the provided data.
 }
 ```
 
-## POST /histogram
+### POST /histogram
 
 Generates a histogram based on the provided data.
 
@@ -136,7 +139,7 @@ Generates a histogram based on the provided data.
 }
 ```
 
-## POST /pie_chart
+### POST /pie_chart
 
 Generates a pie chart based on the provided data.
 
@@ -160,7 +163,7 @@ Generates a pie chart based on the provided data.
 }
 ```
 
-## POST /box_plot
+### POST /box_plot
 
 Generates a box plot based on the provided data.
 
@@ -188,7 +191,7 @@ Generates a box plot based on the provided data.
 }
 ```
 
-## POST /heatmap
+### POST /heatmap
 
 Generates a heatmap based on the provided data.
 
@@ -214,7 +217,7 @@ Generates a heatmap based on the provided data.
 }
 ```
 
-## POST /area_chart
+### POST /area_chart
 
 Generates an area chart based on the provided data.
 
@@ -244,7 +247,7 @@ Generates an area chart based on the provided data.
 }
 ```
 
-## POST /bubble_chart
+### POST /bubble_chart
 
 Generates a bubble chart based on the provided data.
 
@@ -274,7 +277,7 @@ Generates a bubble chart based on the provided data.
 }
 ```
 
-## POST /candlestick_chart
+### POST /candlestick_chart
 
 Generates a candlestick chart based on the provided data.
 
@@ -307,8 +310,8 @@ Generates a candlestick chart based on the provided data.
     "html_embedding": false
 }
 ```
-
-## POST /calculate_compound_interest
+## General Financial Calculation Endpoints
+### POST /calculate_compound_interest
 
 Calculates the compound interest based on the provided parameters.
 
@@ -339,7 +342,7 @@ Calculates the compound interest based on the provided parameters.
 }
 ```
 
-## POST /calculate_loan_payments
+### POST /calculate_loan_payments
 
 Calculates the monthly payment for a loan based on the provided parameters.
 
@@ -368,7 +371,7 @@ Calculates the monthly payment for a loan based on the provided parameters.
 }
 ```
 
-## POST /calculate_savings_growth
+### POST /calculate_savings_growth
 
 Calculates the future value of savings based on the provided parameters.
 
@@ -397,7 +400,7 @@ Calculates the future value of savings based on the provided parameters.
 }
 ```
 
-## POST /calculate_retirement_savings
+### POST /calculate_retirement_savings
 
 Calculates the total retirement savings based on current savings, annual contributions, interest rate, and years.
 
@@ -428,7 +431,7 @@ Calculates the total retirement savings based on current savings, annual contrib
 }
 ```
 
-## POST /calculate_savings_rate
+### POST /calculate_savings_rate
 
 Calculates the savings rate needed to reach a financial goal based on income, goal amount, and time frame.
 
@@ -459,7 +462,7 @@ Calculates the savings rate needed to reach a financial goal based on income, go
 }
 ```
 
-## POST /estimate_emergency_fund
+### POST /estimate_emergency_fund
 
 Estimates the emergency fund required based on monthly expenses and the number of months to cover.
 
@@ -485,8 +488,9 @@ Estimates the emergency fund required based on monthly expenses and the number o
     "emergency_fund": 9000
 }
 ```
+## Investment Calculation Endpoints
 
-## POST /calculate_future_value_investment
+### POST /calculate_future_value_investment
 
 Calculates the future value of an investment given the principal, annual return rate, and number of years.
 
@@ -515,7 +519,7 @@ Calculates the future value of an investment given the principal, annual return 
 }
 ```
 
-## POST /calculate_roi
+### POST /calculate_roi
 
 Calculates the Return on Investment (ROI) given the initial investment and final amount.
 
@@ -542,7 +546,7 @@ Calculates the Return on Investment (ROI) given the initial investment and final
 }
 ```
 
-## POST /estimate_investment_risk
+### POST /estimate_investment_risk
 
 Estimates the investment risk based on the standard deviation of returns.
 
@@ -567,7 +571,7 @@ Estimates the investment risk based on the standard deviation of returns.
 }
 ```
 
-## POST /calculate_investment_growth
+### POST /calculate_investment_growth
 
 Calculates the future value of an investment with annual contributions.
 
@@ -598,7 +602,7 @@ Calculates the future value of an investment with annual contributions.
 }
 ```
 
-## POST /calculate_dividend_yield
+### POST /calculate_dividend_yield
 
 Calculates the dividend yield of a stock.
 
@@ -625,7 +629,7 @@ Calculates the dividend yield of a stock.
 }
 ```
 
-## POST /calculate_portfolio_performance
+### POST /calculate_portfolio_performance
 
 Calculates the performance of a portfolio based on the returns and weights.
 
@@ -652,7 +656,7 @@ Calculates the performance of a portfolio based on the returns and weights.
 }
 ```
 
-## POST /estimate_investment_horizon
+### POST /estimate_investment_horizon
 
 Estimates the number of years needed to reach a target amount given the principal and annual return.
 
