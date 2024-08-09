@@ -9,6 +9,7 @@ from io import BytesIO
 import logging
 
 # Can also include ingestion api call to get kaggle datasets
+# Query our database
 
 class CalculationInput(BaseModel):
     principal: Optional[float] = None
