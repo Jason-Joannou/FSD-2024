@@ -12,7 +12,8 @@ import requests
 from bs4 import BeautifulSoup
 
 # Can also include ingestion api call to get kaggle datasets
-# Query our database
+# Query our database - restricted as it will cost too much
+# This should be an addition to our current app
 
 class CalculationInput(BaseModel):
     principal: Optional[float] = None
