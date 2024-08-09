@@ -1,13 +1,31 @@
-from fastapi import FastAPI, Query, HTTPException, Response, Body
+from fastapi import FastAPI, HTTPException, Response, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse, JSONResponse
 import json
 import plotly.graph_objects as go
-from typing import List, Union
+from pydantic import BaseModel
+from typing import List, Union, Optional
 from io import BytesIO
 import logging
 
 # Can also include ingestion api call to get kaggle datasets
+
+class CalculationInput(BaseModel):
+    principal: Optional[float] = None
+    rate: Optional[float] = None
+    time: Optional[int] = None
+    n: Optional[int] = None
+    annual_rate: Optional[float] = None
+    num_payments: Optional[int] = None
+    deposit: Optional[float] = None
+    periods: Optional[int] = None
+    current_savings: Optional[float] = None
+    annual_contribution: Optional[float] = None
+    years: Optional[int] = None
+    income: Optional[float] = None
+    goal_amount: Optional[float] = None
+    months: Optional[int] = None
+    monthly_expenses: Optional[float] = None
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -544,6 +562,125 @@ async def plot_candlestick_chart(
         return StreamingResponse(content=BytesIO(fig_html.encode()), media_type="text/html")
     
     return JSONResponse(content=fig.to_dict())
+
+@app.post("/calculate_compound_interest")
+def calculate_compound_interest(data: CalculationInput):
+    """
+    Calculate compound interest based on the given parameters.
+
+    Parameters:
+    - principal (float): The initial amount of money.
+    - rate (float): The annual interest rate (decimal).
+    - time (int): The time the money is invested for, in years.
+    - n (int): The number of times that interest is compounded per year.
+
+    Returns:
+    - JSONResponse: The amount of money accumulated after the specified time, including interest.
+    """
+    if not all([data.principal, data.rate, data.time, data.n]):
+        return JSONResponse(content={"error": "Missing required fields"}, status_code=400)
+    
+    A = data.principal * (1 + data.rate / data.n) ** (data.n * data.time)
+    return JSONResponse(content={"amount": A})
+
+@app.post("/calculate_loan_payments")
+def calculate_loan_payments(data: CalculationInput):
+    """
+    Calculate monthly loan payments based on the given parameters.
+
+    Parameters:
+    - principal (float): The amount of the loan.
+    - annual_rate (float): The annual interest rate (percentage).
+    - num_payments (int): The number of monthly payments.
+
+    Returns:
+    - JSONResponse: The monthly payment amount.
+    """
+    if not all([data.principal, data.annual_rate, data.num_payments]):
+        return JSONResponse(content={"error": "Missing required fields"}, status_code=400)
+    
+    monthly_rate = data.annual_rate / 12 / 100
+    payment = (data.principal * monthly_rate) / (1 - (1 + monthly_rate) ** (-data.num_payments))
+    return JSONResponse(content={"monthly_payment": payment})
+
+@app.post("/calculate_savings_growth")
+def calculate_savings_growth(data: CalculationInput):
+    """
+    Calculate the future value of savings based on the given parameters.
+
+    Parameters:
+    - deposit (float): The initial deposit amount.
+    - rate (float): The annual interest rate (decimal).
+    - periods (int): The number of periods.
+
+    Returns:
+    - JSONResponse: The future value of the savings.
+    """
+    if not all([data.deposit, data.rate, data.periods]):
+        return JSONResponse(content={"error": "Missing required fields"}, status_code=400)
+    
+    future_value = data.deposit * (((1 + data.rate) ** data.periods - 1) / data.rate)
+    return JSONResponse(content={"future_value": future_value})
+
+@app.post("/calculate_retirement_savings")
+def calculate_retirement_savings(data: CalculationInput):
+    """
+    Calculate total retirement savings based on the given parameters.
+
+    Parameters:
+    - current_savings (float): The current amount of retirement savings.
+    - annual_contribution (float): The annual contribution to the retirement account.
+    - rate (float): The annual interest rate (decimal).
+    - years (int): The number of years the money is invested.
+
+    Returns:
+    - JSONResponse: The total amount of retirement savings.
+    """
+    if not all([data.current_savings, data.annual_contribution, data.rate, data.years]):
+        return JSONResponse(content={"error": "Missing required fields"}, status_code=400)
+    
+    future_value = data.current_savings * (1 + data.rate) ** data.years
+    future_value += data.annual_contribution * (((1 + data.rate) ** data.years - 1) / data.rate)
+    return JSONResponse(content={"total_savings": future_value})
+
+@app.post("/calculate_savings_rate")
+def calculate_savings_rate(data: CalculationInput):
+    """
+    Calculate the savings rate required to reach a financial goal.
+
+    Parameters:
+    - income (float): The monthly income.
+    - goal_amount (float): The savings goal amount.
+    - months (int): The number of months to save.
+    - rate (float): The annual interest rate (decimal).
+
+    Returns:
+    - JSONResponse: The required savings rate as a percentage of income.
+    """
+    if not all([data.income, data.goal_amount, data.months, data.rate]):
+        return JSONResponse(content={"error": "Missing required fields"}, status_code=400)
+    
+    monthly_savings_needed = data.goal_amount / data.months
+    savings_rate = (monthly_savings_needed / data.income) * 100
+    return JSONResponse(content={"savings_rate": savings_rate})
+
+@app.post("/estimate_emergency_fund")
+def estimate_emergency_fund(data: CalculationInput):
+    """
+    Estimate the amount needed for an emergency fund.
+
+    Parameters:
+    - monthly_expenses (float): The monthly expenses.
+    - months (int): The number of months to cover with the emergency fund.
+
+    Returns:
+    - JSONResponse: The estimated emergency fund amount.
+    """
+    if not all([data.monthly_expenses, data.months]):
+        return JSONResponse(content={"error": "Missing required fields"}, status_code=400)
+    
+    emergency_fund = data.monthly_expenses * data.months
+    return JSONResponse(content={"emergency_fund": emergency_fund})
     
 
 
