@@ -684,3 +684,28 @@ Estimates the number of years needed to reach a target amount given the principa
     "years_needed": 10.24
 }
 ```
+
+## Quality of Life Endpoints
+
+### GET /get_crypto_news
+
+Fetches the latest cryptocurrency news articles from [crypto.news](https://crypto.news/).
+
+**Returns:**
+
+- JSONResponse: A JSON response containing a list of news articles with titles and links.
+
+**Example Response:**
+
+```json
+[
+    {
+        "title": "Bitcoin Hits All-Time High",
+        "link": "https://crypto.news/article/bitcoin-hits-all-time-high"
+    },
+    {
+        "title": "Ethereum 2.0 Update Released",
+        "link": "https://crypto.news/article/ethereum-2-0-update-released"
+    }
+]
+```

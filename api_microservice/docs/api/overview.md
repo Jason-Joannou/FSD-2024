@@ -41,4 +41,8 @@ These endpoints provide various calculations related to investment management.
 - [POST /calculate_portfolio_performance](endpoints.md#post-calculate_portfolio_performance): Calculates the performance of a portfolio based on returns and weights.
 - [POST /estimate_investment_horizon](endpoints.md#post-estimate_investment_horizon): Estimates the number of years needed to reach a target amount.
 
----
+## Quality of Life Endpoints
+
+These endpoints provide features to enhance the user's experience and access useful information.
+
+- [GET /get_crypto_news](endpoints.md#get-get_crypto_news): Retrieves the latest cryptocurrency news articles.

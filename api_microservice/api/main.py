@@ -8,6 +8,8 @@ from typing import List, Union, Optional
 from io import BytesIO
 import logging
 import numpy as np
+import requests
+from bs4 import BeautifulSoup
 
 # Can also include ingestion api call to get kaggle datasets
 # Query our database
@@ -823,9 +825,53 @@ def estimate_investment_horizon(
     years = np.log(target_amount / principal) / np.log(1 + annual_return)
     return JSONResponse(content={"years_needed": years})
     
+@app.get("/get_crypto_news")
+def get_crypto_news() -> JSONResponse:
+    """
+    Fetches the latest cryptocurrency news articles from crypto.news.
 
+    This endpoint scrapes the featured stories and top stories from the crypto.news website,
+    returning a list of articles with titles and links.
 
+    Returns:
+        JSONResponse: A JSON response containing a list of news articles.
+    """
+    url = "https://crypto.news/"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
 
+    news_articles = []
+
+    # Scraping the featured stories
+    featured_stories = soup.find("div", class_="home-top-stories__featured")
+    if featured_stories:
+        articles = featured_stories.find_all("article", class_="post-top-story")
+        for article in articles:
+            title_tag = article.find("p", class_="post-top-story__title")
+            title = title_tag.get_text(strip=True) if title_tag else "No Title"
+            link_tag = title_tag.find("a") if title_tag else None
+            link = link_tag["href"] if link_tag else "No Link"
+            
+            news_articles.append({
+                "title": title,
+                "link": link
+            })
+
+    # Scraping the list of additional top stories
+    list_stories = soup.find("div", class_="home-top-stories__list")
+    if list_stories:
+        items = list_stories.find_all("div", class_="home-top-stories__item")
+        for item in items:
+            link_tag = item.find("a")
+            title = link_tag.get_text(strip=True) if link_tag else "No Title"
+            link = link_tag["href"] if link_tag else "No Link"
+            news_articles.append({
+                "title": title,
+                "description": "No Description",
+                "link": link
+            })
+
+    return JSONResponse(content=news_articles)
 
 
 
