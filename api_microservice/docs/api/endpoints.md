@@ -485,3 +485,198 @@ Estimates the emergency fund required based on monthly expenses and the number o
     "emergency_fund": 9000
 }
 ```
+
+## POST /calculate_future_value_investment
+
+Calculates the future value of an investment given the principal, annual return rate, and number of years.
+
+**Arguments:**
+
+- `principal` (float): The initial amount of money invested.
+- `annual_return` (float): The annual return rate (as a decimal).
+- `years` (int): The number of years the money is invested.
+
+**Returns:**
+- JSON response with the future value of the investment.
+
+**Example Request:**
+```json
+{
+    "principal": 1000,
+    "annual_return": 0.05,
+    "years": 10
+}
+```
+
+**Example Response:**
+```json
+{
+    "future_value": 1647.01
+}
+```
+
+## POST /calculate_roi
+
+Calculates the Return on Investment (ROI) given the initial investment and final amount.
+
+**Arguments:**
+
+- `initial_investment` (float): The amount of money initially invested.
+- `final_amount` (float): The amount of money after the investment.
+
+**Returns:**
+- JSON response with the ROI percentage.
+
+**Example Request:**
+```json
+{
+    "initial_investment": 1000,
+    "final_amount": 1500
+}
+```
+
+**Example Response:**
+```json
+{
+    "roi": 50.0
+}
+```
+
+## POST /estimate_investment_risk
+
+Estimates the investment risk based on the standard deviation of returns.
+
+**Arguments:**
+
+- `returns` (List[float]): A list of historical returns.
+
+**Returns:**
+- JSON response with the estimated risk.
+
+**Example Request:**
+```json
+{
+    "returns": [0.02, 0.03, 0.05, -0.01, 0.04]
+}
+```
+
+**Example Response:**
+```json
+{
+    "risk": 0.025
+}
+```
+
+## POST /calculate_investment_growth
+
+Calculates the future value of an investment with annual contributions.
+
+**Arguments:**
+
+- `principal` (float): The initial amount of money invested.
+- `annual_contribution` (float): The amount contributed annually.
+- `annual_growth_rate` (float): The annual growth rate (as a decimal).
+- `years` (int): The number of years the money is invested.
+
+**Returns:**
+- JSON response with the future value of the investment.
+
+**Example Request:**
+```json
+{
+    "principal": 1000,
+    "annual_contribution": 100,
+    "annual_growth_rate": 0.05,
+    "years": 10
+}
+```
+
+**Example Response:**
+```json
+{
+    "future_value": 2210.00
+}
+```
+
+## POST /calculate_dividend_yield
+
+Calculates the dividend yield of a stock.
+
+**Arguments:**
+
+- `annual_dividends` (float): The total amount of dividends paid annually.
+- `stock_price` (float): The current price of the stock.
+
+**Returns:**
+- JSON response with the dividend yield percentage.
+
+**Example Request:**
+```json
+{
+    "annual_dividends": 5,
+    "stock_price": 100
+}
+```
+
+**Example Response:**
+```json
+{
+    "dividend_yield": 5.0
+}
+```
+
+## POST /calculate_portfolio_performance
+
+Calculates the performance of a portfolio based on the returns and weights.
+
+**Arguments:**
+
+- `returns` (List[float]): A list of returns for each asset in the portfolio.
+- `weights` (List[float]): A list of weights corresponding to each asset in the portfolio.
+
+**Returns:**
+- JSON response with the portfolio return.
+
+**Example Request:**
+```json
+{
+    "returns": [0.05, 0.07, 0.03],
+    "weights": [0.4, 0.4, 0.2]
+}
+```
+
+**Example Response:**
+```json
+{
+    "portfolio_return": 0.052
+}
+```
+
+## POST /estimate_investment_horizon
+
+Estimates the number of years needed to reach a target amount given the principal and annual return.
+
+**Arguments:**
+
+- `principal` (float): The initial amount of money invested.
+- `target_amount` (float): The target amount to be reached.
+- `annual_return` (float): The annual return rate (as a decimal).
+
+**Returns:**
+- JSON response with the number of years needed.
+
+**Example Request:**
+```json
+{
+    "principal": 1000,
+    "target_amount": 2000,
+    "annual_return": 0.07
+}
+```
+
+**Example Response:**
+```json
+{
+    "years_needed": 10.24
+}
+```

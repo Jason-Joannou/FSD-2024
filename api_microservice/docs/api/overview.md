@@ -28,3 +28,17 @@ These endpoints provide various financial calculations to help with personal fin
 - [POST /calculate_retirement_savings](endpoints.md#post-calculate_retirement_savings): Calculates the total retirement savings.
 - [POST /calculate_savings_rate](endpoints.md#post-calculate_savings_rate): Calculates the savings rate needed to reach a financial goal.
 - [POST /estimate_emergency_fund](endpoints.md#post-estimate_emergency_fund): Estimates the emergency fund required.
+
+## Investment Calculation Endpoints
+
+These endpoints provide various calculations related to investment management.
+
+- [POST /calculate_future_value_investment](endpoints.md#post-calculate_future_value_investment): Calculates the future value of an investment.
+- [POST /calculate_roi](endpoints.md#post-calculate_roi): Calculates the Return on Investment (ROI).
+- [POST /estimate_investment_risk](endpoints.md#post-estimate_investment_risk): Estimates the investment risk based on the standard deviation of returns.
+- [POST /calculate_investment_growth](endpoints.md#post-calculate_investment_growth): Calculates the future value of an investment with annual contributions.
+- [POST /calculate_dividend_yield](endpoints.md#post-calculate_dividend_yield): Calculates the dividend yield of a stock.
+- [POST /calculate_portfolio_performance](endpoints.md#post-calculate_portfolio_performance): Calculates the performance of a portfolio based on returns and weights.
+- [POST /estimate_investment_horizon](endpoints.md#post-estimate_investment_horizon): Estimates the number of years needed to reach a target amount.
+
+---
