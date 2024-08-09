@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from typing import List, Union, Optional
 from io import BytesIO
 import logging
+import numpy as np
 
 # Can also include ingestion api call to get kaggle datasets
 # Query our database
@@ -682,6 +683,145 @@ def estimate_emergency_fund(data: CalculationInput):
     
     emergency_fund = data.monthly_expenses * data.months
     return JSONResponse(content={"emergency_fund": emergency_fund})
+
+@app.post("/calculate_future_value_investment")
+def calculate_future_value_investment(
+    principal: float, 
+    annual_return: float, 
+    years: int
+) -> JSONResponse:
+    """
+    Calculate the future value of an investment given the principal, annual return rate, and number of years.
+
+    Parameters:
+    - principal: The initial amount of money invested.
+    - annual_return: The annual return rate (as a decimal).
+    - years: The number of years the money is invested.
+
+    Returns:
+    - JSON response with the future value of the investment.
+    """
+    future_value = principal * (1 + annual_return) ** years
+    return JSONResponse(content={"future_value": future_value})
+
+@app.post("/calculate_roi")
+def calculate_roi(
+    initial_investment: float, 
+    final_amount: float
+) -> JSONResponse:
+    """
+    Calculate the Return on Investment (ROI) given the initial investment and final amount.
+
+    Parameters:
+    - initial_investment: The amount of money initially invested.
+    - final_amount: The amount of money after the investment.
+
+    Returns:
+    - JSON response with the ROI percentage.
+    """
+    roi = (final_amount - initial_investment) / initial_investment * 100
+    return JSONResponse(content={"roi": roi})
+
+@app.post("/estimate_investment_risk")
+def estimate_investment_risk(
+    returns: List[float]
+) -> JSONResponse:
+    """
+    Estimate the investment risk based on the standard deviation of returns.
+
+    Parameters:
+    - returns: A list of historical returns.
+
+    Returns:
+    - JSON response with the estimated risk.
+    """
+    if not returns:
+        raise HTTPException(status_code=400, detail="Returns are required")
+    risk = np.std(returns)
+    return JSONResponse(content={"risk": risk})
+
+@app.post("/calculate_investment_growth")
+def calculate_investment_growth(
+    principal: float, 
+    annual_contribution: float, 
+    annual_growth_rate: float, 
+    years: int
+) -> JSONResponse:
+    """
+    Calculate the future value of an investment with annual contributions.
+
+    Parameters:
+    - principal: The initial amount of money invested.
+    - annual_contribution: The amount contributed annually.
+    - annual_growth_rate: The annual growth rate (as a decimal).
+    - years: The number of years the money is invested.
+
+    Returns:
+    - JSON response with the future value of the investment.
+    """
+    future_value = principal * (1 + annual_growth_rate) ** years
+    future_value += annual_contribution * (((1 + annual_growth_rate) ** years - 1) / annual_growth_rate)
+    return JSONResponse(content={"future_value": future_value})
+
+@app.post("/calculate_dividend_yield")
+def calculate_dividend_yield(
+    annual_dividends: float, 
+    stock_price: float
+) -> JSONResponse:
+    """
+    Calculate the dividend yield of a stock.
+
+    Parameters:
+    - annual_dividends: The total amount of dividends paid annually.
+    - stock_price: The current price of the stock.
+
+    Returns:
+    - JSON response with the dividend yield percentage.
+    """
+    dividend_yield = (annual_dividends / stock_price) * 100
+    return JSONResponse(content={"dividend_yield": dividend_yield})
+
+@app.post("/calculate_portfolio_performance")
+def calculate_portfolio_performance(
+    returns: List[float], 
+    weights: List[float]
+) -> JSONResponse:
+    """
+    Calculate the performance of a portfolio based on the returns and weights.
+
+    Parameters:
+    - returns: A list of returns for each asset in the portfolio.
+    - weights: A list of weights corresponding to each asset in the portfolio.
+
+    Returns:
+    - JSON response with the portfolio return.
+    """
+    if len(returns) != len(weights):
+        raise HTTPException(status_code=400, detail="Returns and weights must be of the same length")
+    portfolio_return = np.dot(returns, weights)
+    return JSONResponse(content={"portfolio_return": portfolio_return})
+
+@app.post("/estimate_investment_horizon")
+def estimate_investment_horizon(
+    principal: float, 
+    target_amount: float, 
+    annual_return: float
+) -> JSONResponse:
+    """
+    Estimate the number of years needed to reach a target amount given the principal and annual return.
+
+    Parameters:
+    - principal: The initial amount of money invested.
+    - target_amount: The target amount to be reached.
+    - annual_return: The annual return rate (as a decimal).
+
+    Returns:
+    - JSON response with the number of years needed.
+    """
+    if annual_return <= 0:
+        raise HTTPException(status_code=400, detail="Annual return must be positive")
+    years = np.log(target_amount / principal) / np.log(1 + annual_return)
+    return JSONResponse(content={"years_needed": years})
     
 
 
