@@ -152,6 +152,70 @@ async def plot_scatter_plot(
     
     return JSONResponse(content=fig.to_dict())
 
+@app.post('/histogram')
+async def plot_histogram(
+    data: List[Union[int, float]] = Body(...),
+    x_axis_title: str = Body("Values"),
+    y_axis_title: str = Body("Frequency"),
+    plot_title: str = Body("Sample Histogram"),
+    bar_color: str = Body("blue"),
+    html_embedding: bool = Body(False),
+) -> Response:
+    logging.debug("Received request with data: %s", data)
+
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(
+        x=data,
+        marker=dict(color=bar_color)
+    ))
+
+    fig.update_layout(
+        title=plot_title,
+        xaxis_title=x_axis_title,
+        yaxis_title=y_axis_title,
+    )
+
+    if html_embedding:
+        try:
+            logging.debug("Attempting to write image...")
+            fig_html = fig.to_html(full_html=False)
+            logging.debug("Image Written")
+        except Exception as e:
+            logging.error(f"Error generating image bytes: {e}")
+            raise HTTPException(status_code=500, detail="Image generation failed.")
+        return StreamingResponse(content=BytesIO(fig_html.encode()), media_type="text/html")
+    
+    return JSONResponse(content=fig.to_dict())
+
+@app.post('/pie_chart')
+async def plot_pie_chart(
+    labels: List[str] = Body(...),
+    values: List[Union[int, float]] = Body(...),
+    plot_title: str = Body("Simple Pie Chart"),
+    html_embedding: bool = Body(False),
+) -> Response:
+    logging.debug("Received request with labels: %s and values: %s", labels, values)
+
+    fig = go.Figure()
+    fig.add_trace(go.Pie(labels=labels, values=values))
+
+    fig.update_layout(
+        title=plot_title,
+    )
+
+    if html_embedding:
+        try:
+            logging.debug("Attempting to write image...")
+            fig_html = fig.to_html(full_html=False)
+            logging.debug("Image Written")
+        except Exception as e:
+            logging.error(f"Error generating image bytes: {e}")
+            raise HTTPException(status_code=500, detail="Image generation failed.")
+        return StreamingResponse(content=BytesIO(fig_html.encode()), media_type="text/html")
+    
+    return JSONResponse(content=fig.to_dict())
+
+
 
 
 
