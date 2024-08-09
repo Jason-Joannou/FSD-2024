@@ -12,3 +12,5 @@ statsmodels
 xgboost
 requests 
 beautifulsoup4
+kaleido
+uvicorn
