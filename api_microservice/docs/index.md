@@ -36,4 +36,4 @@ To get started with the Public API, explore the available endpoints and learn ho
 
 
 
-For detailed usage instructions and examples, refer to the [API Documentation](./api/endpoints.md).
+For detailed usage instructions and examples, refer to the [API Documentation](./api/overview.md).
