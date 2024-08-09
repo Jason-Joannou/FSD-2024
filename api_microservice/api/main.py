@@ -23,6 +23,12 @@ app.add_middleware(
 
 @app.get('/')
 async def root() -> Response: # Need to establish connection to database on connection to site
+    """
+    Returns a welcome message for the FSD public API.
+
+    Returns:
+        Response: A JSON response containing a welcome message.
+    """
     return Response(content=json.dumps({"message":"Welcome to the FSD public API",}), media_type="application/json")
 
 
@@ -37,6 +43,22 @@ async def plot_line_graph(
     marker_style: str = Body("circle"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a line graph based on the provided data.
+
+    Args:
+        x (List[Union[int, float, str]]): Data for the x-axis.
+        y (List[Union[int, float]]): Data for the y-axis.
+        x_axis_title (str): Title for the x-axis.
+        y_axis_title (str): Title for the y-axis.
+        plot_title (str): Title for the plot.
+        line_color (str): Color of the line.
+        marker_style (str): Style of the markers.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with data: x=%s, y=%s", x, y)
     # Validate input lengths
     if len(x) != len(y):
@@ -80,6 +102,21 @@ async def plot_bar_graph(
     bar_color: str = Body("blue"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a bar graph based on the provided data.
+
+    Args:
+        x (List[Union[int, float, str]]): Data for the x-axis.
+        y (List[Union[int, float]]): Data for the y-axis.
+        x_axis_title (str): Title for the x-axis.
+        y_axis_title (str): Title for the y-axis.
+        plot_title (str): Title for the plot.
+        bar_color (str): Color of the bars.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with data: x=%s, y=%s", x, y)
     # Validate input lengths
     if len(x) != len(y):
@@ -122,6 +159,22 @@ async def plot_scatter_plot(
     marker_style: str = Body("circle"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a scatter plot based on the provided data.
+
+    Args:
+        x (List[Union[int, float, str]]): Data for the x-axis.
+        y (List[Union[int, float]]): Data for the y-axis.
+        x_axis_title (str): Title for the x-axis.
+        y_axis_title (str): Title for the y-axis.
+        plot_title (str): Title for the plot.
+        point_color (str): Color of the points.
+        marker_style (str): Style of the markers.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with data: x=%s, y=%s", x, y)
     if len(x) != len(y):
         raise HTTPException(status_code=400, detail="Length of x and y must match.")
@@ -161,6 +214,20 @@ async def plot_histogram(
     bar_color: str = Body("blue"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a histogram based on the provided data.
+
+    Args:
+        data (List[Union[int, float]]): Data to be plotted in the histogram.
+        x_axis_title (str): Title for the x-axis.
+        y_axis_title (str): Title for the y-axis.
+        plot_title (str): Title for the plot.
+        bar_color (str): Color of the bars.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with data: %s", data)
 
     fig = go.Figure()
@@ -194,6 +261,19 @@ async def plot_pie_chart(
     plot_title: str = Body("Simple Pie Chart"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a pie chart based on the provided data.
+
+    Args:
+        labels (List[str]): Labels for the pie chart segments.
+        values (List[Union[int, float]]): Values for each segment of the pie chart.
+        plot_title (str): Title for the plot.
+        colors (List[str]): List of colors for the pie segments.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with labels: %s and values: %s", labels, values)
 
     fig = go.Figure()
@@ -224,6 +304,20 @@ async def plot_box_plot(
     box_color: str = Body("blue"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a box plot based on the provided data.
+
+    Args:
+        data (List[Union[int, float]]): Data to be plotted in the box plot.
+        x_axis_title (str): Title for the x-axis.
+        y_axis_title (str): Title for the y-axis.
+        plot_title (str): Title for the plot.
+        box_color (str): Color of the box plot.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with data: %s", data)
 
     fig = go.Figure()
@@ -255,6 +349,19 @@ async def plot_heatmap(
     plot_title: str = Body("Sample Heatmap"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a heatmap based on the provided data.
+
+    Args:
+        x (List[str]): Data for the x-axis.
+        y (List[str]): Data for the y-axis.
+        z (List[List[float]]): Data for the heatmap values.
+        plot_title (str): Title for the plot.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with x: %s, y: %s", x, y)
 
     fig = go.Figure()
@@ -286,6 +393,21 @@ async def plot_area_chart(
     fill_color: str = Body("lightblue"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates an area chart based on the provided data.
+
+    Args:
+        x (List[Union[int, float, str]]): Data for the x-axis.
+        y (List[Union[int, float]]): Data for the y-axis.
+        x_axis_title (str): Title for the x-axis.
+        y_axis_title (str): Title for the y-axis.
+        plot_title (str): Title for the plot.
+        fill_color (str): Color for the filled area.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with data: x=%s, y=%s", x, y)
     if len(x) != len(y):
         raise HTTPException(status_code=400, detail="Length of x and y must match.")
@@ -326,6 +448,21 @@ async def plot_bubble_chart(
     plot_title: str = Body("Simple Bubble Chart"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a bubble chart based on the provided data.
+
+    Args:
+        x (List[Union[int, float, str]]): Data for the x-axis.
+        y (List[Union[int, float]]): Data for the y-axis.
+        sizes (List[Union[int, float]]): Sizes of the bubbles.
+        x_axis_title (str): Title for the x-axis.
+        y_axis_title (str): Title for the y-axis.
+        plot_title (str): Title for the plot.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with data: x=%s, y=%s", x, y)
     if len(x) != len(y) or len(x) != len(sizes):
         raise HTTPException(status_code=400, detail="Length of x, y, and sizes must match.")
@@ -366,6 +503,21 @@ async def plot_candlestick_chart(
     plot_title: str = Body("Simple Candlestick Chart"),
     html_embedding: bool = Body(False),
 ) -> Response:
+    """
+    Generates a candlestick chart based on the provided financial data.
+
+    Args:
+        dates (List[str]): Dates for the x-axis.
+        open (List[float]): Opening prices.
+        high (List[float]): Highest prices.
+        low (List[float]): Lowest prices.
+        close (List[float]): Closing prices.
+        plot_title (str): Title for the plot.
+        html_embedding (bool): If True, returns the plot as HTML.
+
+    Returns:
+        Response: The plot as JSON, HTML, or an error message.
+    """
     logging.debug("Received request with dates: %s", dates)
 
     fig = go.Figure()
