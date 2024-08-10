@@ -1,12 +1,13 @@
 # API Overview
 
-Welcome to the API documentation for the FSD API. This document provides an overview of the available endpoints and their usage.
+Welcome to the FSD API documentation. This guide offers a comprehensive overview of the available endpoints and how to use them. You can access the root API endpoint at [fsd-api.axh0cuaybfezfjdp.uksouth.azurecontainer.io](http://fsd-api.axh0cuaybfezfjdp.uksouth.azurecontainer.io)
+
 
 ## Plotting Endpoints
 
 These endpoints are designed for generic use, allowing users to plot their own data in various formats.
 
-- [GET /](endpoints.md#get-): Returns a welcome message.
+- [GET /](endpoints.md#api-root): Returns a welcome message.
 - [POST /line_graph](endpoints.md#post-line_graph): Generates a line graph.
 - [POST /bar_graph](endpoints.md#post-bar_graph): Generates a bar graph.
 - [POST /scatter_plot](endpoints.md#post-scatter_plot): Generates a scatter plot.
