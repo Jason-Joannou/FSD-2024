@@ -1,15 +1,17 @@
-from fastapi import FastAPI, Query, HTTPException, Response, Depends
+from fastapi import FastAPI, Query, HTTPException, Response, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from contextlib import asynccontextmanager
 import logging
 from database.sql_connection_test import SQLiteConnection
-from database.utility import run_query
-from typing import List, Dict
+from database.utility import run_query, run_updated_query
+from typing import List, Dict, Optional
 from src.analytics.data_reporting import coin_proportion, coin_summary_info
 from src.analytics.analytical_functions import daily_price_change, daily_price_range, moving_average, find_peaks_and_valleys, correlation_analysis
 from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table, plot_boxplots
 from src.visualizations.plot_analytics import plot_line, plot_candlestick, plot_rsi, plot_bar # Importing the custom plot function
+from ml.main import load_regression_model
 from .validation import UserCreate, UserLogin, UsernameUpdate, EmailUpdate, PasswordUpdate
 import requests
 from bs4 import BeautifulSoup
@@ -328,6 +330,21 @@ def get_crypto_news():
 
     return news_articles
 
+@app.post("/run_regression_model")
+async def run_regression_model(
+        start_date: Optional[str] = Body(None),
+        end_date: Optional[str] = Body(None),
+        coin_names: Optional[List[str]] = Body(None),
+) -> JSONResponse:
+    model_path = "./.models/ridge_model_test.pkl"
+    query = "SELECT * FROM CoinsTable"
+    df = run_query(query=query, connection=db_conn)
+    fig = load_regression_model(file_path=model_path, df=df, coin_names=coin_names, start_date=start_date, end_date=end_date)
+
+    return JSONResponse(content=fig.to_json())
+
+
+    
 @app.get("/get_top_5_crypto")
 def get_top_5_crypto():
     # CoinGecko API URL for top coins
