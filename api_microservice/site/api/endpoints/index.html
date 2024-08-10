@@ -1,0 +1,1314 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../overview/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
+    
+    
+      
+        <title>Endpoints - FSD Public API Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3cba04c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-endpoints" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FSD Public API Documentation" class="md-header__button md-logo" aria-label="FSD Public API Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FSD Public API Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Endpoints
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FSD Public API Documentation" class="md-nav__button md-logo" aria-label="FSD Public API Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    FSD Public API Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Endpoints
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Endpoints
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Root
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Root">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plotting-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plotting Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Plotting Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-line_graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /line_graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-bar_graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /bar_graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-scatter_plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /scatter_plot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /histogram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-pie_chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /pie_chart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-box_plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /box_plot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-heatmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /heatmap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-area_chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /area_chart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-bubble_chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /bubble_chart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-candlestick_chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /candlestick_chart
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-financial-calculation-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Financial Calculation Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General Financial Calculation Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_compound_interest" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_compound_interest
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_loan_payments" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_loan_payments
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_savings_growth" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_savings_growth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_retirement_savings" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_retirement_savings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_savings_rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_savings_rate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-estimate_emergency_fund" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /estimate_emergency_fund
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#investment-calculation-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Investment Calculation Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Investment Calculation Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_future_value_investment" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_future_value_investment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_roi" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_roi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-estimate_investment_risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /estimate_investment_risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_investment_growth" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_investment_growth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_dividend_yield" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_dividend_yield
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-calculate_portfolio_performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /calculate_portfolio_performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-estimate_investment_horizon" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /estimate_investment_horizon
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quality-of-life-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quality of Life Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quality of Life Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-get_crypto_news" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /get_crypto_news
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="api-endpoints">API Endpoints</h1>
+<h2 id="api-root">API Root</h2>
+<h3 id="get">GET /</h3>
+<p>Returns a welcome message for the FSD public API.</p>
+<p><strong>Returns:</strong>
+- JSON response with a welcome message.</p>
+<p><strong>Example Response</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Welcome to the FSD public API&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h2 id="plotting-endpoints">Plotting Endpoints</h2>
+<h3 id="post-line_graph">POST /line_graph</h3>
+<p>Generates a line graph based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>x</code> (List[Union[int, float, str]]): Data for the x-axis.</li>
+<li><code>y</code> (List[Union[int, float]]): Data for the y-axis.</li>
+<li><code>x_axis_title</code> (str): Title for the x-axis.</li>
+<li><code>y_axis_title</code> (str): Title for the y-axis.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>line_color</code> (str): Color of the line.</li>
+<li><code>marker_style</code> (str): Style of the markers.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;x_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Time&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;y_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Line Graph&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;line_color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;marker_style&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;square&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-bar_graph">POST /bar_graph</h3>
+<p>Generates a bar graph based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>x</code> (List[Union[int, float, str]]): Data for the x-axis.</li>
+<li><code>y</code> (List[Union[int, float]]): Data for the y-axis.</li>
+<li><code>x_axis_title</code> (str): Title for the x-axis.</li>
+<li><code>y_axis_title</code> (str): Title for the y-axis.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>bar_color</code> (str): Color of the bars.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;C&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;x_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Categories&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;y_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Values&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Bar Graph&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;bar_color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-scatter_plot">POST /scatter_plot</h3>
+<p>Generates a scatter plot based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>x</code> (List[Union[int, float, str]]): Data for the x-axis.</li>
+<li><code>y</code> (List[Union[int, float]]): Data for the y-axis.</li>
+<li><code>x_axis_title</code> (str): Title for the x-axis.</li>
+<li><code>y_axis_title</code> (str): Title for the y-axis.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>point_color</code> (str): Color of the points.</li>
+<li><code>marker_style</code> (str): Style of the markers.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;x_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X Axis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;y_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Y Axis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Scatter Plot&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;point_color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;marker_style&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;triangle&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-histogram">POST /histogram</h3>
+<p>Generates a histogram based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>data</code> (List[Union[int, float]]): Data to be plotted in the histogram.</li>
+<li><code>x_axis_title</code> (str): Title for the x-axis.</li>
+<li><code>y_axis_title</code> (str): Title for the y-axis.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>bar_color</code> (str): Color of the bars.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;x_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Values&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;y_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frequency&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Histogram&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;bar_color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-pie_chart">POST /pie_chart</h3>
+<p>Generates a pie chart based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>labels</code> (List[str]): Labels for the pie chart segments.</li>
+<li><code>values</code> (List[Union[int, float]]): Values for each segment of the pie chart.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;labels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;C&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;values&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Pie Chart&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-box_plot">POST /box_plot</h3>
+<p>Generates a box plot based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>data</code> (List[Union[int, float]]): Data to be plotted in the box plot.</li>
+<li><code>x_axis_title</code> (str): Title for the x-axis.</li>
+<li><code>y_axis_title</code> (str): Title for the y-axis.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>box_color</code> (str): Color of the box plot.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;x_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X Axis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;y_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Y Axis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Box Plot&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;box_color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-heatmap">POST /heatmap</h3>
+<p>Generates a heatmap based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>x</code> (List[str]): Data for the x-axis.</li>
+<li><code>y</code> (List[str]): Data for the y-axis.</li>
+<li><code>z</code> (List[List[float]]): Data for the heatmap values.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;C&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Y&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Z&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;z&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">]],</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Heatmap&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-area_chart">POST /area_chart</h3>
+<p>Generates an area chart based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>x</code> (List[Union[int, float, str]]): Data for the x-axis.</li>
+<li><code>y</code> (List[Union[int, float]]): Data for the y-axis.</li>
+<li><code>x_axis_title</code> (str): Title for the x-axis.</li>
+<li><code>y_axis_title</code> (str): Title for the y-axis.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>fill_color</code> (str): Color for the filled area.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;x_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X Axis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;y_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Y Axis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Area Chart&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fill_color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lightgreen&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-bubble_chart">POST /bubble_chart</h3>
+<p>Generates a bubble chart based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>x</code> (List[Union[int, float, str]]): Data for the x-axis.</li>
+<li><code>y</code> (List[Union[int, float]]): Data for the y-axis.</li>
+<li><code>sizes</code> (List[Union[int, float]]): Sizes of the bubbles.</li>
+<li><code>x_axis_title</code> (str): Title for the x-axis.</li>
+<li><code>y_axis_title</code> (str): Title for the y-axis.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;sizes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;x_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X Axis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;y_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Y Axis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Bubble Chart&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-candlestick_chart">POST /candlestick_chart</h3>
+<p>Generates a candlestick chart based on the provided data.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>dates</code> (List[str]): Dates for the candlestick chart.</li>
+<li><code>open</code> (List[float]): Opening values.</li>
+<li><code>high</code> (List[float]): High values.</li>
+<li><code>low</code> (List[float]): Low values.</li>
+<li><code>close</code> (List[float]): Closing values.</li>
+<li><code>x_axis_title</code> (str): Title for the x-axis.</li>
+<li><code>y_axis_title</code> (str): Title for the y-axis.</li>
+<li><code>plot_title</code> (str): Title for the plot.</li>
+<li><code>html_embedding</code> (bool): If True, returns the plot as HTML.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON or HTML response with the plot.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;dates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;2024-01-02&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;2024-01-03&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;open&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">102</span><span class="p">,</span><span class="w"> </span><span class="mi">101</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;high&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">105</span><span class="p">,</span><span class="w"> </span><span class="mi">106</span><span class="p">,</span><span class="w"> </span><span class="mi">104</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;low&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">99</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">98</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;close&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">102</span><span class="p">,</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w"> </span><span class="mi">103</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;x_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dates&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;y_axis_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Price&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;plot_title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample Candlestick Chart&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;html_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h2 id="general-financial-calculation-endpoints">General Financial Calculation Endpoints</h2>
+<h3 id="post-calculate_compound_interest">POST /calculate_compound_interest</h3>
+<p>Calculates the compound interest based on the provided parameters.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>principal</code> (float): The initial amount of money.</li>
+<li><code>rate</code> (float): The annual interest rate (decimal).</li>
+<li><code>time</code> (int): The number of years the money is invested.</li>
+<li><code>n</code> (int): The number of times that interest is compounded per year.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the amount of money accumulated after the specified time.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;n&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1647.009</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-calculate_loan_payments">POST /calculate_loan_payments</h3>
+<p>Calculates the monthly payment for a loan based on the provided parameters.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>principal</code> (float): The loan amount.</li>
+<li><code>annual_rate</code> (float): The annual interest rate (percentage).</li>
+<li><code>num_payments</code> (int): The total number of payments.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the monthly payment amount.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;annual_rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;num_payments&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;monthly_payment&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">530.44</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-calculate_savings_growth">POST /calculate_savings_growth</h3>
+<p>Calculates the future value of savings based on the provided parameters.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>deposit</code> (float): The amount of each deposit.</li>
+<li><code>rate</code> (float): The annual interest rate (decimal).</li>
+<li><code>periods</code> (int): The number of periods (e.g., months).</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the future value of the savings.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;deposit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;periods&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;future_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">2492.48</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-calculate_retirement_savings">POST /calculate_retirement_savings</h3>
+<p>Calculates the total retirement savings based on current savings, annual contributions, interest rate, and years.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>current_savings</code> (float): The current amount of savings.</li>
+<li><code>annual_contribution</code> (float): The amount contributed annually.</li>
+<li><code>rate</code> (float): The annual interest rate (decimal).</li>
+<li><code>years</code> (int): The number of years of saving.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the total savings at retirement.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;current_savings&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;annual_contribution&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;years&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;total_savings&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">212347.68</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-calculate_savings_rate">POST /calculate_savings_rate</h3>
+<p>Calculates the savings rate needed to reach a financial goal based on income, goal amount, and time frame.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>income</code> (float): Monthly income.</li>
+<li><code>goal_amount</code> (float): Financial goal amount.</li>
+<li><code>months</code> (int): Number of months to save.</li>
+<li><code>rate</code> (float): Interest rate (decimal).</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the required savings rate.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;income&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;goal_amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;months&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;savings_rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">10.00</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-estimate_emergency_fund">POST /estimate_emergency_fund</h3>
+<p>Estimates the emergency fund required based on monthly expenses and the number of months to cover.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>monthly_expenses</code> (float): Monthly expenses.</li>
+<li><code>months</code> (int): Number of months to cover.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the estimated emergency fund amount.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;monthly_expenses&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1500</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;months&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;emergency_fund&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9000</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h2 id="investment-calculation-endpoints">Investment Calculation Endpoints</h2>
+<h3 id="post-calculate_future_value_investment">POST /calculate_future_value_investment</h3>
+<p>Calculates the future value of an investment given the principal, annual return rate, and number of years.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>principal</code> (float): The initial amount of money invested.</li>
+<li><code>annual_return</code> (float): The annual return rate (as a decimal).</li>
+<li><code>years</code> (int): The number of years the money is invested.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the future value of the investment.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;annual_return&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;years&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;future_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1647.01</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-calculate_roi">POST /calculate_roi</h3>
+<p>Calculates the Return on Investment (ROI) given the initial investment and final amount.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>initial_investment</code> (float): The amount of money initially invested.</li>
+<li><code>final_amount</code> (float): The amount of money after the investment.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the ROI percentage.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;initial_investment&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;final_amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1500</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;roi&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">50.0</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-estimate_investment_risk">POST /estimate_investment_risk</h3>
+<p>Estimates the investment risk based on the standard deviation of returns.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>returns</code> (List[float]): A list of historical returns.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the estimated risk.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;returns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.02</span><span class="p">,</span><span class="w"> </span><span class="mf">0.03</span><span class="p">,</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.01</span><span class="p">,</span><span class="w"> </span><span class="mf">0.04</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;risk&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.025</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-calculate_investment_growth">POST /calculate_investment_growth</h3>
+<p>Calculates the future value of an investment with annual contributions.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>principal</code> (float): The initial amount of money invested.</li>
+<li><code>annual_contribution</code> (float): The amount contributed annually.</li>
+<li><code>annual_growth_rate</code> (float): The annual growth rate (as a decimal).</li>
+<li><code>years</code> (int): The number of years the money is invested.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the future value of the investment.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;annual_contribution&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;annual_growth_rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;years&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;future_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">2210.00</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-calculate_dividend_yield">POST /calculate_dividend_yield</h3>
+<p>Calculates the dividend yield of a stock.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>annual_dividends</code> (float): The total amount of dividends paid annually.</li>
+<li><code>stock_price</code> (float): The current price of the stock.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the dividend yield percentage.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;annual_dividends&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;stock_price&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;dividend_yield&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-calculate_portfolio_performance">POST /calculate_portfolio_performance</h3>
+<p>Calculates the performance of a portfolio based on the returns and weights.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>returns</code> (List[float]): A list of returns for each asset in the portfolio.</li>
+<li><code>weights</code> (List[float]): A list of weights corresponding to each asset in the portfolio.</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the portfolio return.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;returns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="mf">0.07</span><span class="p">,</span><span class="w"> </span><span class="mf">0.03</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;weights&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.4</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;portfolio_return&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.052</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="post-estimate_investment_horizon">POST /estimate_investment_horizon</h3>
+<p>Estimates the number of years needed to reach a target amount given the principal and annual return.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>principal</code> (float): The initial amount of money invested.</li>
+<li><code>target_amount</code> (float): The target amount to be reached.</li>
+<li><code>annual_return</code> (float): The annual return rate (as a decimal).</li>
+</ul>
+<p><strong>Returns:</strong>
+- JSON response with the number of years needed.</p>
+<p><strong>Example Request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;target_amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;annual_return&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;years_needed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">10.24</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h2 id="quality-of-life-endpoints">Quality of Life Endpoints</h2>
+<h3 id="get-get_crypto_news">GET /get_crypto_news</h3>
+<p>Fetches the latest cryptocurrency news articles from <a href="https://crypto.news/">crypto.news</a>.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>JSONResponse: A JSON response containing a list of news articles with titles and links.</li>
+</ul>
+<p><strong>Example Response:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bitcoin Hits All-Time High&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;link&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://crypto.news/article/bitcoin-hits-all-time-high&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ethereum 2.0 Update Released&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;link&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://crypto.news/article/ethereum-2-0-update-released&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.highlight", "search.exact_match", "navigation.tabs", "toc.integrate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      
+    
+  </body>
+</html>
