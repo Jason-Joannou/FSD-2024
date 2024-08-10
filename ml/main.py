@@ -6,6 +6,8 @@ from .forecasts import (data_preprocessing,
                          forecast_features_for_coin)
 from src.visualizations.plot_predictions import plot_base_outcome,plot_predicted_outcome,initialize_plot
 import pickle
+from typing import List
+import plotly.graph_objects as go
 
 def run_regressor(df: pd.DataFrame, alpha: float = 0.1) -> None:
     coin_names = ["Bitcoin","Cardano"]
@@ -44,16 +46,28 @@ def run_gbm(df: pd.DataFrame) -> None:
     fig = plot_predicted_outcome(df=predictions, x_column_name='Date', y_column_name='Predicted_Close', fig=fig)
     fig.show()
 
-def load_regression_model(file_path: str, df: pd.DataFrame) -> None:
-    new_df = preprocess_data(df=df)
+def load_regression_model(file_path: str, df: pd.DataFrame, coin_names: List[str], start_date: str, end_date: str) -> go.Figure:
+    # Convert 'Date' column to datetime format and then to the desired string format
+    df.drop(columns=["Unnamed: 0"], inplace=True) # TODO FIX THIS
+    df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+    
+    # Convert start_date and end_date to datetime format
+    start_date = pd.to_datetime(start_date).strftime('%Y-%m-%d')
+    end_date = pd.to_datetime(end_date).strftime('%Y-%m-%d')
+    
+    # Filter DataFrame for the specified date range
+    filtered_df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
+    
+    # Process and plot data
+    new_df = preprocess_data(df=filtered_df)
     loaded_model = LoadRidgeRegressionModel(file_path=file_path)
-    coin_names = ["Bitcoin","Cardano"]
     predictions = loaded_model.predict_specific_coin(df=new_df, coin_names=coin_names)
-
+    
     fig = initialize_plot()
-    fig = plot_base_outcome(df=df[df['Name'].isin(values=["Bitcoin","Cardano"])], x_column_name='Date', y_column_name='Close',fig=fig)
+    fig = plot_base_outcome(df=filtered_df, x_column_name='Date', y_column_name='Close', fig=fig)
     fig = plot_predicted_outcome(df=predictions, x_column_name='Date', y_column_name='Predicted_Close', fig=fig)
-    fig.show()
+    
+    return fig
 
 
 
@@ -63,7 +77,17 @@ def load_regression_model(file_path: str, df: pd.DataFrame) -> None:
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("./.data/coins.csv")
-    # run_regressor(df=df)
-    # run_gbm(df=df)
-    load_regression_model(file_path="./.models/ridge_model.pkl", df=df)
+    df = pd.read_csv('./.data/coins.csv')
+    new_df = preprocess_data(df=df)
+    target = new_df["Close"]
+    features = new_df.drop(columns=["Close", "Open"])
+
+    model = RidgeRegressionModel(features=features, target=target, alpha=0.1)
+    model.fit_model()
+    file_path = './.models/ridge_model_test.pkl'
+    try:
+        with open(file_path, 'wb') as f:
+            pickle.dump(model, f)
+        print(f"Model saved successfully to {file_path}.")
+    except Exception as e:
+        print(f"An error occurred while saving the model: {e}")
