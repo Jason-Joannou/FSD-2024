@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Response, Body
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse, FileResponse, JSONResponse
+from fastapi.responses import StreamingResponse, JSONResponse
 import json
 import plotly.graph_objects as go
 from pydantic import BaseModel
@@ -873,7 +873,6 @@ def get_crypto_news() -> JSONResponse:
             })
 
     return JSONResponse(content=news_articles)
-
 
 
 
