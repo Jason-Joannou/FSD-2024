@@ -55,17 +55,20 @@ def load_regression_model(file_path: str, df: pd.DataFrame, coin_names: List[str
     start_date = pd.to_datetime(start_date).strftime('%Y-%m-%d')
     end_date = pd.to_datetime(end_date).strftime('%Y-%m-%d')
     
-    # Filter DataFrame for the specified date range
-    filtered_df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
-    
     # Process and plot data
-    new_df = preprocess_data(df=filtered_df)
+    new_df = preprocess_data(df=df)
     loaded_model = LoadRidgeRegressionModel(file_path=file_path)
     predictions = loaded_model.predict_specific_coin(df=new_df, coin_names=coin_names)
+    filtered_df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
+    filtered_df = filtered_df[filtered_df["Name"].isin(values=coin_names)]
+    predictions["Date"] = pd.to_datetime(predictions["Date"])
+    predictions = predictions[predictions["Name"].isin(values=coin_names)]
+    predictions = predictions[(predictions['Date'] >= start_date) & (predictions['Date'] <= end_date)]
     
     fig = initialize_plot()
     fig = plot_base_outcome(df=filtered_df, x_column_name='Date', y_column_name='Close', fig=fig)
     fig = plot_predicted_outcome(df=predictions, x_column_name='Date', y_column_name='Predicted_Close', fig=fig)
+    fig.show()
     
     return fig
 
