@@ -157,7 +157,7 @@ def plot_rsi(df: pd.DataFrame, x_column_name: str, y_column_name: str):
     Returns:
         go.Figure: A Plotly Figure object.
     """
-    df['RSI'] = df.groupby('Name')[y_column_name].transform(lambda x: computeRSI(x, RSI_TIME_WINDOW))
+    df['RSI'] = df.groupby('Name')["Close"].transform(lambda x: computeRSI(x, RSI_TIME_WINDOW)) #changed [y_column_name] to  Close
     fig = go.Figure()
     for coin in df["Name"].unique():
         coin_df = df[df["Name"] == coin]
