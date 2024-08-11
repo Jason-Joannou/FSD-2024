@@ -36,8 +36,10 @@ def correlation_analysis(df: pd.DataFrame) -> pd.DataFrame:
     #TODO Fix the correlation function
     # This function does a correlation analysis between all the columns in the data and not within any specific coin
     # The correlation analysis should be between a selected coin and other coins
-    numeric_cols = df.select_dtypes(include=[np.number]).columns
-    correlation_matrix = df[numeric_cols].corr()
+    df_pivot = df.pivot(index='Date', columns='Name', values='Close')
+    correlation_matrix = df_pivot.corr()
+    # numeric_cols = df.select_dtypes(include=[np.number]).columns
+    # correlation_matrix = df[numeric_cols].corr()
     return correlation_matrix
 
 if __name__ == "__main__":
