@@ -20,9 +20,8 @@ def run_query(query: str, connection: SQLiteConnection, params: Optional[Dict[st
     """
     try:
         # Execute the query with optional parameters
-        # with connection.connect() as conn:
-        #     pass
-        result = connection.connect().execute(text(query), params)
+        with connection.connect() as conn:
+            result = conn.execute(text(query), params)
         
         # Convert the result to a Pandas DataFrame
         df = pd.DataFrame(result.fetchall(), columns=result.keys())
