@@ -68,7 +68,6 @@ def load_regression_model(file_path: str, df: pd.DataFrame, coin_names: List[str
     fig = initialize_plot()
     fig = plot_base_outcome(df=filtered_df, x_column_name='Date', y_column_name='Close', fig=fig)
     fig = plot_predicted_outcome(df=predictions, x_column_name='Date', y_column_name='Predicted_Close', fig=fig)
-    fig.show()
     
     return fig
 
