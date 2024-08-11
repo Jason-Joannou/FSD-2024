@@ -9,7 +9,7 @@ from typing import List, Dict
 from src.analytics.data_reporting import coin_proportion, coin_summary_info
 from src.analytics.analytical_functions import daily_price_change, daily_price_range, moving_average, find_peaks_and_valleys, correlation_analysis
 from src.visualizations.plot_reporting import plot_piechart, plot_switch, plot_summary_table, plot_boxplots
-from src.visualizations.plot_analytics import plot_line  # Importing the custom plot function
+from src.visualizations.plot_analytics import plot_line, plot_candlestick, plot_rsi, plot_bar # Importing the custom plot function
 from .validation import UserCreate, UserLogin, UsernameUpdate, EmailUpdate, PasswordUpdate
 import requests
 from bs4 import BeautifulSoup
@@ -328,5 +328,87 @@ def get_crypto_news():
 
     return news_articles
 
+@app.get("/get_top_5_crypto")
+def get_top_5_crypto():
+    # CoinGecko API URL for top coins
+    url = "https://api.coingecko.com/api/v3/coins/markets"
+
+    # Parameters for the API request
+    params = {
+        "vs_currency": "usd",
+        "order": "market_cap_desc",
+        "per_page": 5,
+        "page": 1
+    }
+
+    # Making the API request
+    response = requests.get(url, params=params)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        data = response.json()
+
+        # Extracting relevant information
+        top_5_crypto = []
+        for coin in data:
+            top_5_crypto.append({
+                "name": coin["name"],
+                "symbol": coin["symbol"],
+                "price": coin["current_price"],
+                "market_cap": coin["market_cap"],
+                "volume": coin["total_volume"]
+            })
+
+        return top_5_crypto
+    else:
+        return {"error": "Unable to fetch data"}
+    
+@app.get('/volume_bar_graph')
+async def volume_bar_graph(coin_names: List[str] = Query(...)) -> Response:
+    try:
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
+#        df = plot_analytics.plot_bar(df)
+        fig = plot_bar(df=df, x_column_name='Date', y_column_name='Volume')  # Updated line
+
+        fig_json = fig.to_json()
+        return Response(content=json.dumps({"transaction": 200, "data": {"graph": fig_json}}), media_type="application/json")
+    except Exception as e:
+        print(f"Error in /volume_bar_graph: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.get('/candlestick_chart')
+async def candlestick_chart(coin_names: List[str] = Query(...)) -> Response:
+    try:
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
+        fig = plot_candlestick(df=df)  # Updated line
+
+        fig_json = fig.to_json()
+        return Response(content=json.dumps({"transaction": 200, "data": {"graph": fig_json}}), media_type="application/json")
+    except Exception as e:
+        print(f"Error in /candlestick_chart: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.get('/rsi_graph')
+async def rsi_graph(coin_names: List[str] = Query(...)) -> Response:
+    try:
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
+        #df['RSI'] = df.groupby('Name')[y_column_name].transform(lambda x: computeRSI(x, RSI_TIME_WINDOW))
+        fig = plot_rsi(df=df, x_column_name='Date', y_column_name='RSI')  # Updated line
+
+        fig_json = fig.to_json()
+        return Response(content=json.dumps({"transaction": 200, "data": {"graph": fig_json}}), media_type="application/json")
+    except Exception as e:
+        print(f"Error in /rsi_graph: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
 
 # Adjust api calls for dates 
