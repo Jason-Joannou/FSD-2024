@@ -170,3 +170,7 @@ cython_debug/
 # Database
 
 *.db
+
+# Terraform files
+
+*.tf
