@@ -1,6 +1,6 @@
 # API Overview
 
-Welcome to the FSD API documentation. This guide offers a comprehensive overview of the available endpoints and how to use them. You can access the root API endpoint at [fsd-api.axh0cuaybfezfjdp.uksouth.azurecontainer.io](http://fsd-api.axh0cuaybfezfjdp.uksouth.azurecontainer.io)
+Welcome to the FSD API documentation. This guide offers a comprehensive overview of the available endpoints and how to use them. You can access the root API endpoint at [fsdpublicapi.uksouth.azurecontainer.io](http://fsdpublicapi.uksouth.azurecontainer.io)
 
 
 ## Plotting Endpoints
