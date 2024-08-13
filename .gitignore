@@ -174,3 +174,4 @@ cython_debug/
 # Terraform files
 
 *.tf
+.terraform/
