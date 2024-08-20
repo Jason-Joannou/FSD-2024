@@ -157,12 +157,15 @@ async def get_correlation_analysis(coin_names: List[str] = Query(...), start_dat
 async def coin_report(coin_name: str = Query("Bitcoin")) -> Response:
     query = f"SELECT * FROM CoinsTable WHERE NAME = '{coin_name}'"
     df = run_query(query=query, connection=db_conn)
-    fig = plot_boxplots(df=df, coin_name=coin_name)
-    fig_json = fig.to_json()
+    fig_other, fig_market, fig_volume = plot_boxplots(df=df, coin_name=coin_name)
+    fig_other_json = fig_other.to_json()
+    fig_market_json = fig_market.to_json()
+    fig_volume_json = fig_volume.to_json()
+
 
     # Return the JSON responses
     # http://127.0.0.1:8000/coin_reporting?coin_name=Aave&graph_type=boxplot
-    return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_json}}), media_type="application/json")
+    return Response(content=json.dumps({"transaction":200, "data":{"graph_other": fig_other_json, "graph_market": fig_market_json, "graph_volume": fig_volume_json}}), media_type="application/json")
 
 
 @app.get('/coin_proportion')
