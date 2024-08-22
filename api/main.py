@@ -507,7 +507,6 @@ def get_trending_coins():
 @app.get("/get_top_gainers")
 def get_top_gainers():
     try:
-
         response = requests.get(f"{COIN_GECKO_API}/coins/markets",
                                 headers=headers,
                                 params={"vs_currency": "usd", "order": "market_cap_desc", "per_page": 250, "page": 1})
