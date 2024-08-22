@@ -87,14 +87,13 @@ async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
 
 
 @app.get('/daily_price_change')
-async def get_daily_price_change(coin_names: List[str] = Query(...), start_date: str = Query(...),
-                                 end_date: str = Query(...)) -> Response:
+async def get_daily_price_change(coin_names: List[str] = Query(...), start_date: str = Query("1970-01-01"),
+                                 end_date: str = Query("2025-01-01")) -> Response:
     try:
         # params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         # placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
         # query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        print(start_date, end_date)
-        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date)
+        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
         # df = run_query(query=query, connection=db_conn, params=params)
         df = daily_price_change(df)
         fig = plot_line(df=df, x_column_name='Date', y_column_name='DailyPriceChangeClosing')
@@ -137,13 +136,10 @@ async def get_moving_averages(coin_names: List[str] = Query(...), window: int = 
     
 #need visualisation tool
 @app.get('/correlation_analysis')
-async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
+async def get_correlation_analysis(coin_names: List[str] = Query(...), start_date: str = Query("1970-01-01"), end_date: str = Query("2025-01-01")) -> Dict:
     #TODO Fix correlation anaylsis endpoint
     try:
-        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        df = run_query(query=query, connection=db_conn, params=params)
+        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
         correlation_matrix = correlation_analysis(df)
         fig = px.imshow(correlation_matrix, text_auto=True, title='Correlation Analysis')
         fig_json = fig.to_json()
@@ -337,16 +333,16 @@ def get_crypto_news():
 
 @app.post("/run_regression_model")
 async def run_regression_model(
-        start_date: Optional[str] = Body(None),
-        end_date: Optional[str] = Body(None),
+        start_date: Optional[str] = Body("1970-01-01"),
+        end_date: Optional[str] = Body("2025-01-01"),
         coin_names: Optional[List[str]] = Body(None),
-) -> JSONResponse:
+) -> Response:
     model_path = "./.models/ridge_model_test.pkl"
     query = "SELECT * FROM CoinsTable"
     df = run_query(query=query, connection=db_conn)
     fig = load_regression_model(file_path=model_path, df=df, coin_names=coin_names, start_date=start_date, end_date=end_date)
 
-    return JSONResponse(content=fig.to_json())
+    return Response(content=json.dumps({"transaction":200, "data":{"graph": fig.to_json(),}}), media_type="application/json")
 
 
     
@@ -386,12 +382,10 @@ def get_top_5_crypto():
         return {"error": "Unable to fetch data"}
     
 @app.get('/volume_bar_graph')
-async def volume_bar_graph(coin_names: List[str] = Query(...)) -> Response:
+async def volume_bar_graph(coin_names: List[str] = Query(...), start_date: str = Query("1970-01-01"), end_date: str = Query("2025-01-01")) -> Response:
     try:
-        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        df = run_query(query=query, connection=db_conn, params=params)
+        
+        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
 #        df = plot_analytics.plot_bar(df)
         fig = plot_bar(df=df, x_column_name='Date', y_column_name='Volume')  # Updated line
 
@@ -403,12 +397,9 @@ async def volume_bar_graph(coin_names: List[str] = Query(...)) -> Response:
 
 
 @app.get('/candlestick_chart')
-async def candlestick_chart(coin_names: List[str] = Query(...)) -> Response:
+async def candlestick_chart(coin_names: List[str] = Query(...), start_date: str = Query("1970-01-01"), end_date: str = Query("2025-01-01")) -> Response:
     try:
-        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        df = run_query(query=query, connection=db_conn, params=params)
+        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
         fig = plot_candlestick(df=df)  # Updated line
 
         fig_json = fig.to_json()
@@ -418,12 +409,9 @@ async def candlestick_chart(coin_names: List[str] = Query(...)) -> Response:
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.get('/rsi_graph')
-async def rsi_graph(coin_names: List[str] = Query(...)) -> Response:
+async def rsi_graph(coin_names: List[str] = Query(...), start_date: str = Query("1970-01-01"), end_date: str = Query("2025-01-01")) -> Response:
     try:
-        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        df = run_query(query=query, connection=db_conn, params=params)
+        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
         #df['RSI'] = df.groupby('Name')[y_column_name].transform(lambda x: computeRSI(x, RSI_TIME_WINDOW))
         fig = plot_rsi(df=df, x_column_name='Date', y_column_name='RSI')  # Updated line
 
