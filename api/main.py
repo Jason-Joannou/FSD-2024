@@ -18,7 +18,7 @@ from bs4 import BeautifulSoup
 import bcrypt
 import json
 import plotly.express as px
-
+from datetime import datetime, timedelta
 
 
 db_conn = SQLiteConnection(database="./test_db.db")
@@ -84,34 +84,35 @@ async def query_coin(coin_names: List[str] = Query(...)) -> Dict:
         sub_error = type(e).__name__  # Get the name of the error
         message = str(e)
         return {"transacation_state": 500, "error_state": {"error_loc": main_error, "sub_error": sub_error, "message": message}}
-    
 
 
 @app.get('/daily_price_change')
-async def get_daily_price_change(coin_names: List[str] = Query(...), start_date: str = Query(...), end_date: str = Query(...)) -> Response:
+async def get_daily_price_change(coin_names: List[str] = Query(...), start_date: str = Query(...),
+                                 end_date: str = Query(...)) -> Response:
     try:
         # params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
         # placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
         # query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        print(start_date, end_date)
+        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date)
         # df = run_query(query=query, connection=db_conn, params=params)
-        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
         df = daily_price_change(df)
         fig = plot_line(df=df, x_column_name='Date', y_column_name='DailyPriceChangeClosing')
 
         fig_json = fig.to_json()
-        return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_json}}), media_type="application/json")
+        return Response(content=json.dumps({"transaction": 200, "data": {"graph": fig_json}}),
+                        media_type="application/json")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get('/daily_price_range')
-async def get_daily_price_range(coin_names: List[str] = Query(...), start_date: str = Query(...), end_date: str = Query(...)) -> Dict:
+async def get_daily_price_range(coin_names: List[str] = Query(...)) -> Dict:
     try:
-        # params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        # placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        # query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        # df = run_query(query=query, connection=db_conn, params=params)
-        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
         df = daily_price_range(df)
         fig = plot_line(df=df, x_column_name='Date', y_column_name='DailyPriceRange')
 
@@ -121,13 +122,12 @@ async def get_daily_price_range(coin_names: List[str] = Query(...), start_date: 
         raise HTTPException(status_code=400, detail=str(e))
     
 @app.get('/moving_averages')
-async def get_moving_averages(coin_names: List[str] = Query(...), start_date: str = Query(...), end_date: str = Query(...), window: int = Query(5)) -> Dict:
+async def get_moving_averages(coin_names: List[str] = Query(...), window: int = Query(5)) -> Dict:
     try:
-        # params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        # placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        # query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        # df = run_query(query=query, connection=db_conn, params=params)
-        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
         df = moving_average(df, window=window)
         fig = plot_line(df=df, x_column_name='Date', y_column_name=f'MovingAverage_{window}')
         fig_json = fig.to_json()
@@ -137,16 +137,16 @@ async def get_moving_averages(coin_names: List[str] = Query(...), start_date: st
     
 #need visualisation tool
 @app.get('/correlation_analysis')
-async def get_correlation_analysis(coin_names: List[str] = Query(...), start_date: str = Query(...), end_date: str = Query(...)) -> Dict:
+async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
     #TODO Fix correlation anaylsis endpoint
     try:
-        # params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        # placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        # query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        # df = run_query(query=query, connection=db_conn, params=params)
-        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
         correlation_matrix = correlation_analysis(df)
         fig = px.imshow(correlation_matrix, text_auto=True, title='Correlation Analysis')
+        fig.show()
         fig_json = fig.to_json()
         return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_json}}), media_type="application/json")
     except Exception as e:
@@ -341,13 +341,13 @@ async def run_regression_model(
         start_date: Optional[str] = Body(None),
         end_date: Optional[str] = Body(None),
         coin_names: Optional[List[str]] = Body(None),
-) -> Response:
+) -> JSONResponse:
     model_path = "./.models/ridge_model_test.pkl"
     query = "SELECT * FROM CoinsTable"
     df = run_query(query=query, connection=db_conn)
     fig = load_regression_model(file_path=model_path, df=df, coin_names=coin_names, start_date=start_date, end_date=end_date)
 
-    return Response(content=json.dumps({"transaction":200, "data":{"graph": fig.to_json()}}), media_type="application/json")
+    return JSONResponse(content=fig.to_json())
 
 
     
@@ -387,12 +387,13 @@ def get_top_5_crypto():
         return {"error": "Unable to fetch data"}
     
 @app.get('/volume_bar_graph')
-async def volume_bar_graph(coin_names: List[str] = Query(...), start_date: str = Query(...), end_date: str = Query(...)) -> Response:
+async def volume_bar_graph(coin_names: List[str] = Query(...)) -> Response:
     try:
-        # params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        # placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        # query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
+#        df = plot_analytics.plot_bar(df)
         fig = plot_bar(df=df, x_column_name='Date', y_column_name='Volume')  # Updated line
 
         fig_json = fig.to_json()
@@ -403,13 +404,12 @@ async def volume_bar_graph(coin_names: List[str] = Query(...), start_date: str =
 
 
 @app.get('/candlestick_chart')
-async def candlestick_chart(coin_names: List[str] = Query(...), start_date: str = Query(...), end_date: str = Query(...)) -> Response:
+async def candlestick_chart(coin_names: List[str] = Query(...)) -> Response:
     try:
-        # params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        # placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        # query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        # df = run_query(query=query, connection=db_conn, params=params)
-        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
         fig = plot_candlestick(df=df)  # Updated line
 
         fig_json = fig.to_json()
@@ -419,13 +419,12 @@ async def candlestick_chart(coin_names: List[str] = Query(...), start_date: str 
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.get('/rsi_graph')
-async def rsi_graph(coin_names: List[str] = Query(...), start_date: str = Query(...), end_date: str = Query(...)) -> Response:
+async def rsi_graph(coin_names: List[str] = Query(...)) -> Response:
     try:
-        # params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
-        # placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
-        # query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
-        # df = run_query(query=query, connection=db_conn, params=params)
-        df = run_updated_query(coin_names=coin_names, start_date=start_date, end_date=end_date, connection=db_conn)
+        params = {f"coin_{i}": coin_name for i, coin_name in enumerate(coin_names)}
+        placeholders = ', '.join([f':coin_{i}' for i in range(len(params))])
+        query = f"SELECT * FROM CoinsTable WHERE NAME IN ({placeholders})"
+        df = run_query(query=query, connection=db_conn, params=params)
         #df['RSI'] = df.groupby('Name')[y_column_name].transform(lambda x: computeRSI(x, RSI_TIME_WINDOW))
         fig = plot_rsi(df=df, x_column_name='Date', y_column_name='RSI')  # Updated line
 
@@ -435,4 +434,97 @@ async def rsi_graph(coin_names: List[str] = Query(...), start_date: str = Query(
         print(f"Error in /rsi_graph: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
-# Adjust api calls for dates 
+
+# Adjust api calls for dates
+API_KEY = "CG-Ysm5SPG3N2tZST5TdTgEVQ6n"
+COIN_GECKO_API = "https://api.coingecko.com/api/v3"
+
+headers = {
+    "x-cg-demo-api-key": API_KEY
+}
+
+@app.get("/get_market_data")
+def get_market_data():
+    try:
+        # Fetch current market data
+        current_data_response = requests.get(f"{COIN_GECKO_API}/global", headers=headers)
+        current_data_response.raise_for_status()
+        current_data = current_data_response.json().get("data", {})
+        market_cap = current_data.get("total_market_cap", {}).get("usd", 0)
+        market_volume = current_data.get("total_volume", {}).get("usd", 0)
+
+        return {
+            "market_cap": market_cap,
+            "market_volume": market_volume
+        }
+
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/get_trending_coins")
+def get_trending_coins():
+    try:
+        # Fetch trending coins
+        response = requests.get(f"{COIN_GECKO_API}/search/trending", headers=headers)
+        response.raise_for_status()
+        trending_coins = response.json().get("coins", [])
+
+        if not trending_coins:
+            raise HTTPException(status_code=404, detail="No trending coins found")
+
+        result = []
+        for coin in trending_coins:
+            coin_id = coin['item'].get('id')
+            if not coin_id:
+                continue
+
+            # Fetch detailed coin data
+            coin_data_response = requests.get(f"{COIN_GECKO_API}/coins/{coin_id}", headers=headers)
+            coin_data_response.raise_for_status()
+            coin_data = coin_data_response.json()
+
+            market_cap_rank = coin_data.get('market_cap_rank', float('inf'))  # Default to infinity if not available
+
+            if market_cap_rank <= 250:  # Adjust to top 250 if needed
+                result.append({
+                    "name": coin['item'].get('name', 'Unknown'),
+                    "symbol": coin['item'].get('symbol', 'Unknown'),
+                    "market_cap_rank": market_cap_rank,
+                    "percentage_change_7d": coin_data.get("market_data", {}).get("price_change_percentage_7d_in_currency", {}).get('usd', 'N/A')
+                })
+
+        # Limit the result to the top 5 coins
+        result = result[:5]
+
+        if not result:
+            raise HTTPException(status_code=404, detail="No trending coins in the top 250 found")
+
+        return result
+
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/get_top_gainers")
+def get_top_gainers():
+    try:
+        response = requests.get(f"{COIN_GECKO_API}/coins/markets",
+                                headers=headers,
+                                params={"vs_currency": "usd", "order": "market_cap_desc", "per_page": 250, "page": 1})
+        response.raise_for_status()
+        coins = response.json()
+
+        if not coins:
+            raise HTTPException(status_code=404, detail="No coins data found")
+
+        # Filter coins to only include those with a market cap rank <= 250
+        top_gainers = sorted(
+            [coin for coin in coins if coin.get('market_cap_rank', float('inf')) <= 250 and coin.get('price_change_percentage_24h', 0) > 0],
+            key=lambda x: x.get('price_change_percentage_24h', 0),
+            reverse=True
+        )[:5]
+
+        return {"top_gainers": [{"name": coin.get("name", 'Unknown'),
+                                 "price_change_percentage_24h": coin.get("price_change_percentage_24h", 'N/A')} for coin
+                                in top_gainers]}
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=str(e))
