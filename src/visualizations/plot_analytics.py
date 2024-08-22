@@ -96,8 +96,7 @@ def plot_line(df: pd.DataFrame, x_column_name: str, y_column_name: str):
             mode='lines+markers',
             name=f'{coin} {y_column_name}'
         ))
-    fig.update_layout(title=f"Line graph of {y_column_name} over {x_column_name}", xaxis_title=x_column_name,
-                      yaxis_title=y_column_name)
+
     return fig
 
 def plot_bar(df: pd.DataFrame, x_column_name: str, y_column_name: str):
@@ -120,8 +119,7 @@ def plot_bar(df: pd.DataFrame, x_column_name: str, y_column_name: str):
             y=coin_df[y_column_name],
             name=f'{coin} {y_column_name}'
         ))
-        fig.update_layout(title=f"Bar graph of {y_column_name} over {x_column_name}", xaxis_title=x_column_name,
-                          yaxis_title=y_column_name)
+
     return fig
 
 def plot_pie(df: pd.DataFrame, names_column_name: str, values_column_name: str):
@@ -167,7 +165,7 @@ def plot_rsi(df: pd.DataFrame, x_column_name: str, y_column_name: str):
             mode='lines',
             name=f'{coin} RSI'
         ))
-    fig.update_layout(title="Relative Strength Index (RSI)", xaxis_title=x_column_name, yaxis_title="RSI")
+        
     return fig
 
 def compute_and_plot_correlation_matrix(df: pd.DataFrame, price_column='Close'):
