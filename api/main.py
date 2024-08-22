@@ -146,7 +146,6 @@ async def get_correlation_analysis(coin_names: List[str] = Query(...)) -> Dict:
         df = run_query(query=query, connection=db_conn, params=params)
         correlation_matrix = correlation_analysis(df)
         fig = px.imshow(correlation_matrix, text_auto=True, title='Correlation Analysis')
-        fig.show()
         fig_json = fig.to_json()
         return Response(content=json.dumps({"transaction":200, "data":{"graph": fig_json}}), media_type="application/json")
     except Exception as e:
